@@ -64,8 +64,9 @@ async function createEmployee(employee) {
 	return createdEmployee;
 }
 
+
 // Export the functions for use in the controller
 module.exports = {
-	checkIfEmployeeExists,
-	createEmployee,
+  checkIfEmployeeExists,
+  createEmployee,
 };
