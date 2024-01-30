@@ -46,6 +46,7 @@ async function createEmployee(employee) {
 		const query3 =
 			"INSERT INTO employee_pass (employee_id, employee_password_hashed) VALUES (?, ?)";
 		const rows3 = await conn.query(query3, [employee_id, hashedPassword]);
+
 		const query4 =
 			"INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)";
 		const rows4 = await conn.query(query4, [
