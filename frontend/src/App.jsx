@@ -11,12 +11,14 @@ import "./assets/template_assets/css/color.css";
 
 // Import the custom css file
 import "./assets/styles/custom.css";
+import AddEmployee from "./markup/pages/admin/AddEmployee";
 function App() {
 	return (
 		<>
 			{/* <Header /> */}
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
+				<Route path="/admin/add-employee" element={<AddEmployee />}></Route>
 			</Routes>
 			{/* <Footer /> */}
 		</>
