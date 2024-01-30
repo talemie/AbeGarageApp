@@ -8,7 +8,7 @@ import "./assets/template_assets/css/bootstrap.css";
 import "./assets/template_assets/css/style.css";
 import "./assets/template_assets/css/responsive.css";
 import "./assets/template_assets/css/color.css";
-
+import Footer  from "./markup/components/Footer/Footer";
 // Import the custom css file
 import "./assets/styles/custom.css";
 import AddEmployee from "./markup/pages/admin/AddEmployee";
@@ -22,7 +22,7 @@ function App() {
 				<Route path="/employee/login" element={<Login />}></Route>
 				<Route path="/admin/add-employee" element={<AddEmployee />}></Route>
 			</Routes>
-			{/* <Footer /> */}
+			<Footer />
 		</>
 	);
 }
