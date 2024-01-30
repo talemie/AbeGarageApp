@@ -17,6 +17,7 @@ async function createEmployee(req, res, next) {
 			// Create the employee
 			const employee = await employeeService.createEmployee(employeeData);
 			if (!employee) {
+				console.log(employee);
 				res.status(400).json({
 					error: "Failed to add the employee!",
 				});
