@@ -13,10 +13,11 @@ import Footer  from "./markup/components/Footer/Footer";
 import "./assets/styles/custom.css";
 import AddEmployee from "./markup/pages/admin/AddEmployee";
 import Login from "./markup/pages/Login";
+import Header from "./markup/components/Header/Header";
 function App() {
 	return (
 		<>
-			{/* <Header /> */}
+			<Header />
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/login" element={<Login />}></Route>
