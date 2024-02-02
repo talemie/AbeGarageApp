@@ -30,5 +30,5 @@ router.use(customerRoutes);
 // router.use(serviceRoutes);
 // // Add the vehicle routes to the main router
 router.use(vehicleRoutes);
-
+// export router
 module.exports = router;

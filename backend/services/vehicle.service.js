@@ -14,46 +14,85 @@ async function checkIfVehicleExists(vehicle_serial) {
 // A function to create a new vehicle
 async function createVehicle(vehicle) {
 	let createdVehicle = "";
+
+	try {
+		const query1 =
+			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id = ?";
+		const rows1 = await conn.query(query1, [vehicle.customer_id]);
+		if (rows1.length === 0) {
+			createdVehicle = {
+				status: "fail",
+				message: `there is no customer with id of ${vehicle.customer_id}`,
+			};
+			return createdVehicle;
+		}
+		const customerId = rows1[0].customer_id;
+		const query =
+			"INSERT INTO customer_vehicle_info (customer_id,vehicle_year,vehicle_make,vehicle_model,vehicle_type,vehicle_mileage,vehicle_tag,vehicle_serial,vehicle_color) VALUES (?,?,?,?,?,?,?,?,?)";
+		const rows = await conn.query(query, [
+			customerId,
+			vehicle.vehicle_year,
+			vehicle.vehicle_make,
+			vehicle.vehicle_model,
+			vehicle.vehicle_type,
+			vehicle.vehicle_mileage,
+			vehicle.vehicle_tag,
+			vehicle.vehicle_serial,
+			vehicle.vehicle_color,
+		]);
+		
+		if (rows.affectedRows !== 1) {
+			createdVehicle = {
+				status: "fail",
+				message: "Failed to add the vehicle!",
+			};
+			return createdVehicle;
+		}
+		createdVehicle = {
+			vehicle_make: vehicle.vehicle_make,
+			owner: rows1[0].customer_first_name,
+		};
+		return createdVehicle;
+	} catch (error) {
+		console.log(error.message);
+	}
+}
+// A function to update vehicle
+async function updateVehicle(id, updates) {
 	try {
 		const query =
-			"INSERT INTO customer_vehicle_info (customer_id, vehicle_year,vehicle_make,vehicle_model,vehicle_type,vehicle_mileage,vehicle_tag,vehicle_serial,vehicle_color) VALUES (?,?,?,?,?,?,?,?,?)";
+			"UPDATE customer_vehicle_info SET vehicle_year = ?, vehicle_make = ?, vehicle_model = ?, vehicle_type = ?, vehicle_mileage = ?, vehicle_tag = ?, vehicle_serial = ?, vehicle_color = ? WHERE vehicle_id = ?";
 		const rows = await conn.query(query, [
-			employee.employee_email,
-			employee.active_employee,
+			updates.vehicle_year,
+			updates.vehicle_make,
+			updates.vehicle_model,
+			updates.vehicle_type,
+			updates.vehicle_mileage,
+			updates.vehicle_tag,
+			updates.vehicle_serial,
+			updates.vehicle_color,
+			id,
 		]);
-		// console.log(rows);
-		if (rows.affectedRows !== 1) {
-			return false;
-		}
-	} catch (error) {}
-}
-
-// A function to get vehicle by vehicle_id
-async function getSingleVehicleByid(id) {
-	try {
-		const returnData = {};
-		const query = "SELECT * FROM customer_vehicle_info WHERE vehicle_id = ? ";
-		const rows = await conn.query(query, [id]);
 		if (rows.length === 0) {
-			returnData = {
+			const returnData = {
 				status: "fail",
 				message: "vehicle does not exist",
 			};
 			return returnData;
 		}
-		returnData = {
-			status: "success",
-			data: rows[0],
+		const returnData = {
+			...updates,
 		};
+
 		return returnData;
 	} catch (error) {
 		console.log(error.message);
 	}
 }
 
-// Export the functions for use in the controller
+// Export all functions for use in the controller
 module.exports = {
 	checkIfVehicleExists,
 	createVehicle,
-	getSingleVehicleByid,
+	updateVehicle,
 };
