@@ -16,7 +16,7 @@ async function getAllServices(req, res, next) {
 }
 
 // Get Single Service
-exports.getSingleService = async (req, res) => {
+async function getSingleService(req, res) {
 	try {
 		const serviceId = req.params.id;
 		const service = await serviceService.getSingleService(serviceId);
@@ -24,10 +24,10 @@ exports.getSingleService = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
-};
+}
 
 // Add New Service
-exports.addNewService = async (req, res) => {
+async function addNewService(req, res) {
 	try {
 		const { service_name, service_description } = req.body;
 		await serviceService.addNewService(service_name, service_description);
@@ -35,7 +35,7 @@ exports.addNewService = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
-};
+}
 
 //  write a function to update services
 async function updateService(req, res, next) {
