@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 console.log(token)
     if (err) {
       return res.status(401).send({
