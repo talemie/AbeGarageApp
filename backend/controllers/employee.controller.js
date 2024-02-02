@@ -34,7 +34,44 @@ async function createEmployee(req, res, next) {
 		}
 	}
 }
+
+// Create the getAllEmployees controller
+async function getAllEmployees(req, res, next) {
+	// Call the getAllEmployees method from the employee service
+	const employees = await employeeService.getAllEmployees();
+	// console.log(employees);
+	if (!employees) {
+		res.status(400).json({
+			error: "Failed to get all employees!",
+		});
+	} else {
+		res.status(200).json({
+			status: "success",
+			data: employees,
+		});
+	}
+}
+
+// Create the getSingleEmployee controller
+async function getSingleEmployee(req, res, next) {
+	const employeeId = req.params.id;
+	// Call the getSingleEmployee method from the employee service
+	const employee = await employeeService.getSingleEmployee(employeeId);
+	// console.log(employees);
+	if (!employee) {
+		res.status(400).json({
+			error: "Failed to get single employee!",
+		});
+	} else {
+		res.status(200).json({
+			status: "success",
+			data: employee,
+		});
+	}
+}
 // Export the createEmployee controller
 module.exports = {
 	createEmployee,
+	getAllEmployees,
+	getSingleEmployee,
 };
