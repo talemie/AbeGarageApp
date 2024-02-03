@@ -89,6 +89,42 @@ async function getSingleEmployee(employeeId) {
 	const rows = await conn.query(query, [employeeId]);
 	return rows[0];
 }
+// A function to update employee by ID
+async function updateEmployee(EmployeeId, updatedData) {
+	try {
+		// Update data in customer_info table
+		const query1 =
+			"UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_id = ?";
+		const rows1 = await conn.query(query1, [
+			updatedData.employee_first_name,
+			updatedData.employee_last_name,
+			updatedData.employee_phone,
+			EmployeeId,
+		]);
+		const query2 =
+			"UPDATE employee SET active_employee = ?  WHERE employee_id = ?";
+		const rows2 = await conn.query(query2, [
+			updatedData.active_employee,
+			EmployeeId,
+		]);
+
+		if (rows1.affectedRows !== 1 || rows2.affectedRows !== 1) {
+			return false;
+		}
+
+		// Construct the updated customer object to return
+		const updatedEmployee = {
+			employee_id: EmployeeId,
+			...updatedData,
+		};
+
+		return  updatedEmployee;
+	} catch (err) {
+		console.log(err.message);
+		return false;
+	}
+}
+
 
 // Export the functions for use in the controller
 module.exports = {
@@ -97,4 +133,5 @@ module.exports = {
 	getEmployeeByEmail,
 	getAllEmployees,
 	getSingleEmployee,
+	updateEmployee
 };
