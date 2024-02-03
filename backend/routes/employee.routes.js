@@ -12,5 +12,8 @@ router.post("/api/employee",[authMiddleware.verifyToken, authMiddleware.isAdmin]
 router.get("/api/employees",[authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getAllEmployees);
 // Create a route to handle the get single employee request on get
 router.get("/api/employee/:id",[authMiddleware.verifyToken, authMiddleware.isAdmin],employeeController.getSingleEmployee);
+// Updateroutes for employee
+router.put("/api/employee/:id",[authMiddleware.verifyToken, authMiddleware.isAdmin],employeeController.updateEmployee);
+
 // Export the router
 module.exports = router;
