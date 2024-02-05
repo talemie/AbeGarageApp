@@ -11,7 +11,7 @@ const loginRoutes = require("./login.routes");
 // // Import the customer routes
 const customerRoutes = require("./customer.routes");
 // // Import the order routes
-// const orderRoutes = require("./order.routes");
+const orderRoutes = require("./order.routes");
 // // Import the service routes
 const serviceRoutes = require("./service.routes");
 // // Import the vehicle routes
@@ -25,7 +25,7 @@ router.use(loginRoutes);
 // Add the customer routes to the main router
 router.use(customerRoutes);
 // // Add the order routes to the main router
-// router.use(orderRoutes);
+router.use(orderRoutes);
 // // Add the service routes to the main router
 router.use(serviceRoutes);
 // // Add the vehicle routes to the main router
