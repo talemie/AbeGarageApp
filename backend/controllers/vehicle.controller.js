@@ -74,9 +74,9 @@ const getSingleVehicleById = async (req, res) => {
 			});
 		}
 
-		res.status(200).json({
+		res.status(200).json(
 			vehicle,
-		});
+		);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({

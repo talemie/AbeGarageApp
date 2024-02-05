@@ -100,16 +100,16 @@ if (rows.length === 0) {
 	return rows[0];
 }
 async function  getVehiclesPerCustomer(customer_id) {
-	const query = "SELECT * FROM customer_vehicle_info WHERE customer_id = ? ";
-	const rows = await conn.query(query, [customer_id]);
-if (rows.length === 0) {
-			const returnData = {
-				status: "fail",
-				message: "vehicle does not exist",
-			};
-			return returnData;
-		}
-	return rows[0]; // Assuming there is only one customer with a given ID
+  const query = "SELECT * FROM customer_vehicle_info WHERE customer_id = ? ";
+  const rows = await conn.query(query, [customer_id]);
+  if (rows.length === 0) {
+    const returnData = {
+      status: "fail",
+      message: "vehicle does not exist",
+    };
+    return returnData;
+  }
+  return rows; // Assuming there is only one customer with a given ID
 }
 
 
