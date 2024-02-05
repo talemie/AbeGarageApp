@@ -19,12 +19,14 @@ import Login from "./markup/pages/Login";
 import Header from "./markup/components/Header/Header";
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
+import ServicesPublic from "./markup/pages/ServicesPublic";
 function App() {
 	return (
 		<>
 			<Header />
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
+				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 				<Route path="/admin/employees" element={<Employees />}></Route>

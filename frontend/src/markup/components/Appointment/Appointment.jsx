@@ -5,14 +5,14 @@ function Appointment() {
 		<div>
 			<section className="cta-section">
 				<div className="auto-container">
-					<div className="wrapper-box">
-						<div className="left-column">
+					<div className="wrapper-box row">
+						<div className="left-column col-md-6">
 							<h3>Schedule Your Appointment Today</h3>
 							<div className="text">
 								Your Automotive Repair & Maintenance Service Specialist
 							</div>
 						</div>
-						<div className="right-column">
+						<div className="right-column col-md-6">
 							<div className="phone">1800.456.7890</div>
 							<div className="btn">
 								<a href="#" className="theme-btn btn-style-one">
