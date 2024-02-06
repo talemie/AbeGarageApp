@@ -7,7 +7,7 @@ function AdminMenu(props) {
 				<h2>Admin Menu</h2>
 			</div>
 			<div className="list-group">
-				<a href="/admin" className="list-group-item">
+				<a href="/admin/dashboard" className="list-group-item">
 					Dashboard
 				</a>
 				<a href="/admin/orders" className="list-group-item">
