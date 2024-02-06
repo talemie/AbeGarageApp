@@ -1,3 +1,29 @@
+// import service service
+const serviceService = require("../services/service.service");
+// Create the get all services controller
+async function getAllServices(req, res, next) {
+	const data = await serviceService.getAll(req.body.service_name);
+	try {
+	} catch (error) {}
+}
+
+async function updateService(req, res, next) {
+	// / A function to check if service exists in the database
+	const serviceExists = await serviceService.checkIfServiceExists(
+		req.body.service_name
+	);
+	//  If service doesn't exist send error message back to the admin
+	if (!serviceExists)
+		return res.status(400).json({ error: "Service doesn't exist!" });
+	// If service exists proceed with updating the service
+	else {
+		try {
+		} catch (error) {}
+	}
+}
+
+// Export the update service controller methods
+module.exports = { getAllServices, getSingleServices, updateService };
 const serviceService = require("../services/service.service");
 
 // write a function to get all services
