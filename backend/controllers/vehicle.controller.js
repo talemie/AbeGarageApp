@@ -63,8 +63,52 @@ async function updateVehicle(req, res, next) {
 		});
 	}
 }
+const getSingleVehicleById = async (req, res) => {
+	try {
+		const vehicleId = req.params.id;
+		const vehicle = await vehicleService.getSingleVehicleById(vehicleId);
+
+		if (!vehicle) {
+			return res.status(404).json({
+				error: "vehicle not found",
+			});
+		}
+
+		res.status(200).json(
+			vehicle,
+		);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			error: "Internal Server Error",
+		});
+	}
+};
+// Create the get vehicle by customer_id controller
+async function getVehiclesPerCustomer(req, res, next) {
+  try {
+    const id = req.params.customer_id;
+    const vehicle = await vehicleService.getVehiclesPerCustomer(id);
+    // If the vehicle is not found
+    if (vehicle.status === "fail") {
+      res.status(400).json({
+        status: vehicle.status,
+        message: vehicle.message,
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+       vehicle,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 // Export the createVehicle controller
 module.exports = {
-	createVehicle,
-	updateVehicle,
+  createVehicle,
+  updateVehicle,
+  getSingleVehicleById,
+  getVehiclesPerCustomer,
 };

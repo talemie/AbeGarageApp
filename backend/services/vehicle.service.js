@@ -90,9 +90,35 @@ async function updateVehicle(id, updates) {
 	}
 }
 
+async function getSingleVehicleById(vehicle_Id) {
+	
+	 const query = "SELECT * FROM customer_vehicle_info WHERE vehicle_id = ? ";
+	const rows = await conn.query(query, [vehicle_Id]);
+if (rows.length === 0) {
+		return false;
+	}
+	return rows[0];
+}
+async function  getVehiclesPerCustomer(customer_id) {
+  const query = "SELECT * FROM customer_vehicle_info WHERE customer_id = ? ";
+  const rows = await conn.query(query, [customer_id]);
+  if (rows.length === 0) {
+    const returnData = {
+      status: "fail",
+      message: "vehicle does not exist",
+    };
+    return returnData;
+  }
+  return rows; // Assuming there is only one customer with a given ID
+}
+
+
+
 // Export all functions for use in the controller
 module.exports = {
 	checkIfVehicleExists,
 	createVehicle,
 	updateVehicle,
+getSingleVehicleById,
+getVehiclesPerCustomer,
 };
