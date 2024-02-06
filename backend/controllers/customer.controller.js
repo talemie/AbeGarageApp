@@ -1,5 +1,5 @@
 const customerService = require("../services/customer.service");
-
+const uuid = require("uuid");
 const getAllCustomers = async (req, res) => {
 	try {
 		const customers = await customerService.getAllCustomers();
@@ -58,8 +58,15 @@ const createCustomer = async (req, res) => {
 			});
 		}
 
-		// Create the customer
-		const customerData = req.body;
+		// Create the customer with a generated UUID
+		const generatedUuid = uuid.v4();
+		console.log("Generated UUID:", generatedUuid);
+
+		const customerData = {
+			...req.body,
+			customer_hash: generatedUuid, // Use the generated UUID
+		};
+
 		const customer = await customerService.createCustomer(customerData);
 
 		if (!customer) {

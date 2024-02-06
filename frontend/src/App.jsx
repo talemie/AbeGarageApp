@@ -19,7 +19,8 @@ import AddEmployee from "./markup/pages/admin/AddEmployee";
 import Unauthorized from "./markup/pages/Unauthorized";
 import Login from "./markup/pages/Login";
 import Header from "./markup/components/Header/Header";
-
+import AddCustomers from "./markup/pages/admin/AddCustomers";
+import Customers from "./markup/pages/admin/Customers";
 import AdminDashboard from "./markup/pages/admin/Dashboard";
 import ServicesManage from "./markup/pages/admin/ServicesManage";
 
@@ -43,6 +44,22 @@ function App() {
 				<Route path="/admin/employees" element={<Employees />}></Route>
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
+				<Route
+					path="/admin/add-customer"
+					element={
+						<PrivateAuthRoute roles={[2, 3]}>
+							<AddCustomers />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/customers"
+					element={
+						<PrivateAuthRoute roles={[2, 3]}>
+							<Customers />
+						</PrivateAuthRoute>
+					}
+				/>
 				<Route
 					path="/admin/add-employee"
 					element={
