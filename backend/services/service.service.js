@@ -2,24 +2,16 @@
 const conn = require("../config/db.config");
 // A function to check if service exists in the database
 async function checkIfServiceExists(service_name) {
-	const sql = `SELECT * FROM services WHERE service_name=?`;
-	let [results] = await conn.query(sql, [service_name]);
+	const sql = `SELECT * FROM common_services WHERE service_name=?`;
+	let results = await conn.query(sql, [service_name]);
 	if (results.length > 0) {
 		return true;
 	}
 	false;
 }
-// A funtion to update a service's information in the database
-async function updateServiceInfo(id, new_info) {
-	try {
-	} catch (error) {}
-}
-// Export functions to use in service controller
-module.exports = { checkIfServiceExists };
-const conn = require("../config/db.config");
 
 // Get Single Service
-async function getSingleService(serviceId) {
+async function getServiceById(serviceId) {
 	try {
 		const query = "SELECT * FROM common_services WHERE service_id = ?";
 		const [service] = await conn.query(query, [serviceId]);
@@ -83,7 +75,8 @@ async function updateService(service_id, newData) {
 
 //export
 module.exports = {
-	getSingleService,
+	checkIfServiceExists,
+	getServiceById,
 	addNewService,
 	getAllServices,
 	updateService,
