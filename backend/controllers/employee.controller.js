@@ -13,13 +13,12 @@ async function createEmployee(req, res, next) {
 		});
 	} else {
 		try {
-
 			// Validate request body
-		const errors = validateCreateEmployee(req.body);
+			const errors = validateCreateEmployee(req.body);
 
-		if (errors) {
-			return res.status(400).json({ errors });
-		}
+			if (errors) {
+				return res.status(400).json({ errors });
+			}
 			const employeeData = req.body;
 			// Create the employee
 			const employee = await employeeService.createEmployee(employeeData);
@@ -132,5 +131,5 @@ module.exports = {
 	createEmployee,
 	getAllEmployees,
 	getSingleEmployee,
-	updateEmployee
+	updateEmployee,
 };
