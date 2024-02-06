@@ -39,7 +39,7 @@ async function createCustomer(customer) {
 			customer_id,
 			customer.customer_first_name,
 			customer.customer_last_name,
-			customer.active_customer_status,
+			1,
 		]);
 
 		// Insert data into customer_vehicle_info table (if needed)
@@ -68,7 +68,7 @@ async function getCustomerByEmail(customer_email) {
 async function getAllCustomers() {
 	try {
 		const query =
-			" SELECT * FROM customer_identifier INNER JOIN customer_info  ON customer_identifier.customer_id = customer_info.customer_id";
+			" SELECT * FROM customer_identifier INNER JOIN customer_info  ON customer_identifier.customer_id = customer_info.customer_id ORDER BY customer_info.customer_id DESC";
 
 		const rows = await conn.query(query);
 
