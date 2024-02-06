@@ -14,6 +14,7 @@ import Footer from "./markup/components/Footer/Footer";
 // Import the custom css file
 import "./assets/styles/custom.css";
 // Import the Employees component
+
 import Employees from "./markup/pages/admin/Employees";
 import AddEmployee from "./markup/pages/admin/AddEmployee";
 import Unauthorized from "./markup/pages/Unauthorized";
@@ -75,3 +76,4 @@ function App() {
 }
 
 export default App;
+gi;
