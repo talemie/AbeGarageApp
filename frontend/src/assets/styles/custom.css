@@ -262,3 +262,17 @@ input:disabled {
 .change-status {
 	cursor: pointer;
 }
+
+/* aboutus background  */
+.page-title{
+    background-image: url('../images/banner/aboutusBanner.png');
+    background-repeat: "no-repeat";
+    background-size: cover;
+		
+  }
+/* contact banner  */
+  .contactbanner{
+    background-image: url('../images/banner/Abegaragebg.png');
+    background-repeat: "no-repeat";
+    background-size: cover;
+  }

@@ -1,5 +1,7 @@
 import "./App.css";
 import Home from "./markup/pages/Home";
+import About from "./markup/pages/About";
+import Contact from "./markup/pages/Contact";
 // Import the Routes and Route components from react-router
 import { Routes, Route } from "react-router";
 
@@ -30,6 +32,10 @@ function App() {
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 				<Route path="/admin/employees" element={<Employees />}></Route>
+				<Route path="/about" element={<About />}></Route>
+				<Route path="/contact" element={<Contact />}></Route>
+
+
 				<Route
 					path="/admin/add-employee"
 					element={
