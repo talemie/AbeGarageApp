@@ -61,10 +61,35 @@ const updateCustomer = async (formData, loggedInEmployeeToken) => {
 	}
 };
 
+// A function to send get request to getCustomer
+const getCustomer = async (customer_id) => {
+	// console.log('customer id',customer_id);
+	const requestOptions = {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			// "x-access-token": token,
+		},
+	};
+	try {
+		const response = await fetch(
+		`${api_url}/api/customer/${customer_id}`,
+		requestOptions
+	);
+    // console.log('customer:',response);
+	return response;
+	} catch (error) {
+		console.error("Error fetching customer:", error);
+		throw error;
+	}
+	
+};
+
 const customerServices = {
 	createCustomer,
 	getAllCustomers,
 	updateCustomer,
+	getCustomer,
 };
 
 export default customerServices;

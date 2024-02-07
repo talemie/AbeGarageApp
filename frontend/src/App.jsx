@@ -28,6 +28,7 @@ import ServicesManage from "./markup/pages/admin/ServicesManage";
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import ServicesPublic from "./markup/pages/ServicesPublic";
+import Orders from "./markup/pages/admin/Orders";
 
 function App() {
 	return (
@@ -68,6 +69,14 @@ function App() {
 						</PrivateAuthRoute>
 					}
 				></Route>
+				<Route
+					path="/admin/orders"
+					element={
+						<PrivateAuthRoute roles={[1, 2, 3]}>
+							<Orders />
+						</PrivateAuthRoute>
+					}
+				/>
 			</Routes>
 			<Footer />
 		</>

@@ -27,13 +27,18 @@ async function createOrder(order) {
 		}
 		const orderHashedId = generateRandomOrderHashedId();
 		// console.log(orderHashedId);
+		// order body validation
+		if (!order.employee_id || !order.customer_id || !order.vehicle_id) {
+			throw new Error("Missing data in request body!");
+			
+		}
 		// query for Inserting the employee_id,customer_id, vehicle_id, active_order and order_hash in to the orders table
 		const query = `INSERT INTO orders (employee_id,customer_id, vehicle_id, active_order,order_hash)  VALUES (?,?,?,?,?)`;
 		const rows = await conn.query(query, [
 			order.employee_id,
 			order.customer_id,
 			order.vehicle_id,
-			order.active_order,
+			1,
 			orderHashedId,
 		]);
 		// console.log(rows);
@@ -69,11 +74,11 @@ async function createOrder(order) {
 			order_id,
 			order.order_total_price,
 			order.estimated_completion_date,
-			order.completion_date,
+			null,
 			order.additional_request,
 			order.order_description,
-			order.notes_for_customer,
-			order.additional_requests_completed,
+			"",
+			0,
 		];
 
 		// Ensure the number of placeholders matches the length of queryParams
@@ -96,7 +101,7 @@ async function createOrder(order) {
 			const rows3 = await conn.query(query3, [
 				order_id,
 				service.service_id,
-				service.service_completed,
+				0,
 			]);
 			// console.log("rows3 result:", rows3);
 			if (rows3.affectedRows !== 1) {
@@ -105,7 +110,7 @@ async function createOrder(order) {
 		}
 
 		const query4 = `INSERT INTO order_status (order_id, order_status)  VALUES (?, ?)`;
-		const rows4 = await conn.query(query4, [order_id, order.order_completed]);
+		const rows4 = await conn.query(query4, [order_id, 0]);
 		// console.log("rows4 result:", rows4);
 		if (rows4.affectedRows !== 1) {
 			return false;
