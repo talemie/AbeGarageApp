@@ -29,6 +29,7 @@ import ServicesManage from "./markup/pages/admin/ServicesManage";
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import ServicesPublic from "./markup/pages/ServicesPublic";
 import Orders from "./markup/pages/admin/Orders";
+import NewOrder from "./markup/pages/admin/NewOrder";
 
 function App() {
 	return (
@@ -74,6 +75,14 @@ function App() {
 					element={
 						<PrivateAuthRoute roles={[1, 2, 3]}>
 							<Orders />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/order"
+					element={
+						<PrivateAuthRoute roles={[1, 2, 3]}>
+							<NewOrder />
 						</PrivateAuthRoute>
 					}
 				/>

@@ -201,6 +201,7 @@ input:disabled {
 	border: 1px solid #ced4da;
 	border-top: 0;
 	margin-bottom: 20px;
+	position: relative;
 }
 .selected-customer h3 {
 	font-weight: 600;
