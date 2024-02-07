@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import customerService from "../../../../services/customer.service";
-import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { FaHandPointer } from "react-icons/fa";
 import CustomerVehicle from "../CustomerVehicle/CustomerVehicle";
 import vehicleService from "../../../../services/vehicle.service";
 import SearchCustomer from "../SearchCustomer/SearchCustomer";
