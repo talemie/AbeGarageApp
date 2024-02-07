@@ -5,7 +5,7 @@ import { useAuth } from "../../../Contexts/AuthContext";
 import LoginForm from "../../components/LoginForm/LoginForm";
 // Import the admin menu component
 import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
-import AddOrder from "../../components/Admin/AddOrder/AddOrder";
+import AddOrder from "../../components/Admin/Orders/AddOrder/AddOrder";
 function NewOrder() {
 	// Destructure the auth hook
 	const { isLogged, isAdmin } = useAuth();
@@ -22,7 +22,7 @@ function NewOrder() {
 								<AdminMenu />
 							</div>
 							<div className="col-md-9 admin-right-side">
-								<AddOrder/>
+								<AddOrder />
 							</div>
 						</div>
 					</div>

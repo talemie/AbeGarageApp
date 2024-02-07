@@ -4,9 +4,9 @@ import { FaHandPointer } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import serviceService from "../../../../services/service.service";
-import { useAuth } from "../../../../Contexts/AuthContext";
-import orderService from "../../../../services/order.service";
+import serviceService from "../../../../../services/service.service";
+import { useAuth } from "../../../../../Contexts/AuthContext";
+import orderService from "../../../../../services/order.service";
 function CustomerVehicle({ customer, vehicles }) {
 	const navigate = useNavigate();
 	const { isLogged, isAdmin, employee } = useAuth();

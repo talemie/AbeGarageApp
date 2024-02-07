@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import customerService from "../../../../services/customer.service";
+import customerService from "../../../../../services/customer.service";
 import CustomerVehicle from "../CustomerVehicle/CustomerVehicle";
-import vehicleService from "../../../../services/vehicle.service";
+import vehicleService from "../../../../../services/vehicle.service";
 import SearchCustomer from "../SearchCustomer/SearchCustomer";
 
 function AddOrder() {
