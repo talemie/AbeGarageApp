@@ -276,3 +276,42 @@ input:disabled {
     background-repeat: "no-repeat";
     background-size: cover;
   }
+
+
+  /* for order */
+.order-text1 {
+	font-size: 20px;
+	color: #001659;
+	font-weight: 600;
+}
+.order-text2 {
+	font-size: 13px;
+	color: #001659;
+	font-weight: 500;
+}
+.order-status-done {
+	font-size: 13px;
+	background-color: green;
+	border-radius: 15px;
+	padding: 1px 3px 3px;
+	color: white;
+}
+.order-status-inprogress {
+  font-size: 13px;
+	background-color: yellow;
+	border-radius: 15px;
+	padding: 1px 3px 3px;
+}
+.customer-info{
+	padding:  13px !important;
+	background-color: #fff;
+	position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  padding: 5px;
+  color: red;
+}

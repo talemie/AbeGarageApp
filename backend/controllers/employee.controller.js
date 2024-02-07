@@ -69,10 +69,10 @@ async function getSingleEmployee(req, res, next) {
 			error: "Failed to get single employee!",
 		});
 	} else {
-		res.status(200).json({
-			status: "success",
-			data: employee,
-		});
+		res.status(200).json(
+			
+			employee,
+		);
 	}
 }
 // Create the updateEmployee controller
