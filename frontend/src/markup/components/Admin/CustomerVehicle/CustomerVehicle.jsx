@@ -5,9 +5,6 @@ import { FaEdit } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import serviceService from "../../../../services/service.service";
-// import AdditionalRequests from "../AdditionRequests/AdditionalRequests";
-// import ChooseService from "../ChooseService/ChooseService";
-// import VehicleInfo from "../VehicleInfo/VehicleInfo";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import orderService from "../../../../services/order.service";
 function CustomerVehicle({ customer, vehicles }) {
