@@ -37,7 +37,6 @@ function App() {
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
-
 				<Route path="/admin/add-employee" element={<AddEmployee />}></Route>
 				<Route path="/admin/dashboard" element={<AdminDashboard />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
@@ -76,4 +75,3 @@ function App() {
 }
 
 export default App;
-gi;

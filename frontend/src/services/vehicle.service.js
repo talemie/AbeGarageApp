@@ -11,24 +11,37 @@ const createVehicle = async (formData) => {
 		body: JSON.stringify(formData),
 	};
 	console.log(requestOptions);
-	const response = await fetch(`${api_url}/api/vehicle`, requestOptions);
-	return response;
+	try {
+		const response = await fetch(`${api_url}/api/vehicle`, requestOptions);
+		return response;
+	} catch (error) {
+		console.error("Error creating vehicle:", error);
+		throw error;
+	}
 };
 
 // A function to send get request to get single vehicle by vehicle_id
-const getSingleVehicleById = async () => {
-	// console.log(token);
+const getSingleVehicleById = async (id) => {
+	
 	const requestOptions = {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
 		},
 	};
-	const response = await fetch(`${api_url}/api/vehicle/:id`, requestOptions);
-	return response;
+	try {
+		const response = await fetch(
+			`${api_url}/api/vehicle/` + id,
+			requestOptions
+		);
+		return response;
+	} catch (error) {
+		console.error("Error creating vehicle:", error);
+		throw error;
+	}
 };
 // A function to send get request to get single vehicle by customer_id
-const getVehiclesPerCustomer = async () => {
+const getVehiclesPerCustomer = async (customer_id) => {
 	// console.log(token);
 	const requestOptions = {
 		method: "GET",
@@ -37,7 +50,7 @@ const getVehiclesPerCustomer = async () => {
 		},
 	};
 	const response = await fetch(
-		`${api_url}/api/vehicles/:customer_id`,
+		`${api_url}/api/vehicles/` + customer_id,
 		requestOptions
 	);
 	return response;

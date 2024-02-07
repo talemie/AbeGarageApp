@@ -11,21 +11,20 @@ function AddVehicleForm() {
 	const [vehicle_tag, setVehicleTag] = useState("");
 	const [vehicle_serial, setVehicleSerial] = useState("");
 	const [vehicle_color, setVehicleColor] = useState("");
-	const customer_id = useParams();
+	const { customer_id } = useParams();
+	console.log(customer_id);
 	// Errors
 	const [Error, setError] = useState("");
-	const [success, setSuccess] = useState(false);
+	const [success, setSuccess] = useState("");
 	const [serverError, setServerError] = useState("");
-
+	console.log(success);
 	const handleSubmit = (e) => {
-		// Prevent the default behavior of the form
 		e.preventDefault();
 		// Handle client side validations
 		let valid = true; // Flag
-		// First name is required
 
-		// Password has to be at least 6 characters long
 		if (
+			!customer_id ||
 			!vehicle_year ||
 			!vehicle_make ||
 			!vehicle_model ||
@@ -62,19 +61,19 @@ function AddVehicleForm() {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
-				// If Error is returned from the API server, set the error message
+				// // If Error is returned from the API server, set the error message
 				if (data.error) {
 					setServerError(data.error);
 				} else {
 					// Handle successful response
-					setSuccess(true);
+					setSuccess("vehicle added successfully");
 					setServerError("");
-					// Redirect to the employees page after 2 seconds
-					// For now, just redirect to the home page
-					setTimeout(() => {
-						// window.location.href = '/admin/employees';
-						window.location.href = "/";
-					}, 2000);
+					// Redirect to the add vehicle  page after 2 seconds
+					//  just redirect to the customer detail page
+					// setTimeout(() => {
+					// 	// window.location.href = '/admin/employees';
+					// 	window.location.href = `/admin/customer/${customer_id}`;
+					// }, 2000);
 				}
 			})
 			// Handle Catch
@@ -114,11 +113,6 @@ function AddVehicleForm() {
 												placeholder="Vehicle year"
 												required
 											/>
-											{/* {emailError && (
-												<div className="validation-error" role="alert">
-													{emailError}
-												</div>
-											)} */}
 										</div>
 										<div className="form-group col-md-8">
 											<input
@@ -129,11 +123,6 @@ function AddVehicleForm() {
 												placeholder="Vehicle make"
 												required
 											/>
-											{/* {firstNameRequired && (
-												<div className="validation-error" role="alert">
-													{firstNameRequired}
-												</div>
-											)} */}
 										</div>
 
 										<div className="form-group col-md-8">
@@ -208,11 +197,15 @@ function AddVehicleForm() {
 													setVehicleColor(event.target.value)
 												}
 												placeholder="Vehicle color"
-												required
 											/>
 											{Error && (
 												<div className="validation-error" role="alert">
 													{Error}
+												</div>
+											)}
+											{success && (
+												<div className="validation-error" role="alert">
+													{success}
 												</div>
 											)}
 										</div>
