@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import loginService from "../../../services/login.service";
-
+import { useAuth } from "../../../Contexts/AuthContext";
 function LoginForm(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -10,7 +10,7 @@ function LoginForm(props) {
 	const [emailError, setEmailError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
 	const [serverError, setServerError] = useState("");
-
+	const { isLogged, isAdmin, setIsLogged, employee } = useAuth();
 	// Function to handle the form submission.
 	const handleSubmit = async (e) => {
 		e.preventDefault(); // Prevents page refresh on submit.

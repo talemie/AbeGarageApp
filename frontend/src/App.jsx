@@ -40,12 +40,20 @@ function App() {
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/admin/add-employee" element={<AddEmployee />}></Route>
-				<Route path="/admin/dashboard" element={<AdminDashboard />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 				<Route path="/admin/employees" element={<Employees />}></Route>
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
+				<Route
+					path="/admin/dashboard"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<AdminDashboard />
+						</PrivateAuthRoute>
+					}
+				/>
+
 				<Route
 					path="/admin/add-customer"
 					element={
