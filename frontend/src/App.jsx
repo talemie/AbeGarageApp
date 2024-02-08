@@ -30,7 +30,7 @@ import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import ServicesPublic from "./markup/pages/ServicesPublic";
 import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
-
+import Four04 from "./markup/pages/Four04";
 function App() {
 	return (
 		<>
@@ -39,12 +39,11 @@ function App() {
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
-				<Route path="/admin/add-employee" element={<AddEmployee />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
-				<Route path="/admin/employees" element={<Employees />}></Route>
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
+				<Route path="/*" element={<Four04 />}></Route>
 				<Route
 					path="/admin/dashboard"
 					element={
@@ -67,6 +66,14 @@ function App() {
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>
 							<Customers />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/employees"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<Employees />
 						</PrivateAuthRoute>
 					}
 				/>
