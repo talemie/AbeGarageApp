@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../../assets/images/logo.png";
 // Import the custom context hook
 import { useAuth } from "../../../Contexts/AuthContext";
@@ -8,14 +8,27 @@ import { Link } from "react-router-dom";
 
 function Header() {
 	// Use the custom hook to access the data in the context
-	const { isLogged, setIsLogged, employee } = useAuth();
-
+	const { isLogged, setIsLogged, isAdmin, setIsAdmin, employee, setEmployee } =
+		useAuth();
+	const [isEmployee, setisEmployee] = useState(false);
+	// function checkEmployee() {
+	// 	if (employee?.employee_role === 1) {
+	// 		setisEmployee(true);
+	// 	}
+	// }
+	// useEffect(() => {
+	// 	checkEmployee();
+	// }, []);
+	// console.log(employee?.employee_role);
+	// console.log(isEmployee);
 	// Log out event handler function
 	const logOut = () => {
 		// Call the logout function from the login service
 		loginService.logOut();
 		// Set the isLogged state to false
 		setIsLogged(false);
+		setIsAdmin(false);
+		setisEmployee(false);
 	};
 	return (
 		<div>
@@ -78,6 +91,15 @@ function Header() {
 												<li>
 													<a href="/contact">Contact Us</a>
 												</li>
+												{isAdmin ? (
+													<li>
+														<Link to="/admin/dashboard">Admin</Link>
+													</li>
+												) : (
+													<li>
+														<Link to="/landing"></Link>
+													</li>
+												)}
 											</ul>
 										</div>
 									</nav>

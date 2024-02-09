@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import loginService from "../../../services/login.service";
-import { useAuth } from "../../../Contexts/AuthContext";
 function LoginForm(props) {
-	const navigate = useNavigate();
 	const location = useLocation();
 	const [employee_email, setEmail] = useState("");
 	const [employee_password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
 	const [serverError, setServerError] = useState("");
-	const { isLogged, isAdmin, setIsLogged, employee } = useAuth();
+
 	// Function to handle the form submission.
-	useEffect(() => {
-		employee;
-	}, []);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault(); // Prevents page refresh on submit.
 		// Handle client-side validation
@@ -63,6 +59,7 @@ function LoginForm(props) {
 			.then((response) => response.json())
 			.then((response) => {
 				console.log(response);
+
 				// If an error is returned from the API server, set the error message
 				if (response.status === "success") {
 					// Save the user in local storage
@@ -70,21 +67,13 @@ function LoginForm(props) {
 						console.log(response.data);
 						localStorage.setItem("employee", JSON.stringify(response.data));
 					}
-					if (employee.employee_role === 3) {
-						navigate("/admin/dashboard");
-						window.location.reload();
-						return;
+					// // Navigate to admin
+					console.log(location);
+					if (location.pathname === "/login") {
+						window.location.replace("/");
 					} else {
-						navigate("/");
 						window.location.reload();
 					}
-					// Navigate to admin
-					// console.log(location);
-					// if (location.pathname === "/login") {
-					// 	window.location.replace("/");
-					// } else {
-					// 	window.location.reload();
-					// }
 				} else {
 					// Show an error message
 					setServerError(response.message);
@@ -95,7 +84,7 @@ function LoginForm(props) {
 				setServerError("An error has occurred. Please try again later");
 			});
 	};
-
+	// console.log(employee);
 	return (
 		<section className="contact-section">
 			<div className="auto-container">

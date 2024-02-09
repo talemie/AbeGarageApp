@@ -31,6 +31,7 @@ import ServicesPublic from "./markup/pages/ServicesPublic";
 import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
+import EmployeeLanding from "./markup/pages/Employee/EmployeeLanding";
 function App() {
 	return (
 		<>
@@ -43,7 +44,16 @@ function App() {
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
+
 				<Route path="/*" element={<Four04 />}></Route>
+				<Route
+					path="/landing"
+					element={
+						<PrivateAuthRoute roles={[1]}>
+							<EmployeeLanding />
+						</PrivateAuthRoute>
+					}
+				></Route>
 				<Route
 					path="/admin/dashboard"
 					element={
