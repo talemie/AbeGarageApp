@@ -8,26 +8,27 @@ import { Link } from "react-router-dom";
 
 function Header() {
 	// Use the custom hook to access the data in the context
-	const { isLogged, setIsLogged, isAdmin, setIsAdmin, employee, setEmployee } =
-		useAuth();
-	const [isEmployee, setisEmployee] = useState(false);
-	// function checkEmployee() {
-	// 	if (employee?.employee_role === 1) {
-	// 		setisEmployee(true);
-	// 	}
-	// }
-	// useEffect(() => {
-	// 	checkEmployee();
-	// }, []);
-	// console.log(employee?.employee_role);
-	// console.log(isEmployee);
-	// Log out event handler function
+	const {
+		isLogged,
+		setIsLogged,
+		isAdmin,
+		setIsAdmin,
+		isManager,
+		setisManager,
+		employee,
+		isEmployee,
+		setisEmployee,
+		setEmployee,
+	} = useAuth();
+
 	const logOut = () => {
 		// Call the logout function from the login service
 		loginService.logOut();
 		// Set the isLogged state to false
 		setIsLogged(false);
 		setIsAdmin(false);
+		setisEmployee(false);
+		setisManager(false);
 		setisEmployee(false);
 	};
 	return (
@@ -92,19 +93,41 @@ function Header() {
 													<a href="/contact">Contact Us</a>
 												</li>
 												{isAdmin ? (
-													<li>
-														<Link to="/admin/dashboard">Admin</Link>
+													<li className="mr-5 ">
+														<Link
+															className="text-primary"
+															to="/admin/dashboard"
+														>
+															Admin
+														</Link>
 													</li>
 												) : (
-													<li>
-														<Link to="/landing"></Link>
+													""
+												)}
+												{isManager ? (
+													<li className="mr-5">
+														<Link className="text-primary" to="/managerlanding">
+															Manager
+														</Link>
 													</li>
+												) : (
+													""
+												)}
+												{isEmployee ? (
+													<li className="mr-5">
+														<Link className="text-primary" to="/admin/orders">
+															Orders
+														</Link>
+													</li>
+												) : (
+													""
 												)}
 											</ul>
 										</div>
 									</nav>
 								</div>
-								<div className="search-btn"></div>
+								{!isLogged ? <div className="search-btn"></div> : ""}
+
 								{isLogged ? (
 									<div className="link-btn">
 										<Link

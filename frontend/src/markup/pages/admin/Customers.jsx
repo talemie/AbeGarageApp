@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useAuth } from "../../../Contexts/AuthContext";
 import LoginForm from "../../components/LoginForm/LoginForm";
@@ -6,11 +5,11 @@ import CustomersList from "../../components/Admin/CustomerList/CustomersList";
 import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
 
 function Customers() {
-	const { isLogged, isAdmin } = useAuth();
+	const { isLogged, isAdmin, isManager } = useAuth();
 
 	if (isLogged) {
-		console.log('Test22');
-		if (isAdmin) {
+		console.log("Test22");
+		if (isAdmin || isManager) {
 			return (
 				<div>
 					<div className="container-fluid admin-pages">

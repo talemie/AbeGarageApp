@@ -14,13 +14,18 @@ export const AuthProvider = ({ children }) => {
 	const [isLogged, setIsLogged] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [employee, setEmployee] = useState(null);
-
+	const [isManager, setisManager] = useState(false);
+	const [isEmployee, setisEmployee] = useState(false);
 	const value = {
 		isLogged,
 		isAdmin,
+		isManager,
 		setIsAdmin,
 		setIsLogged,
+		setisManager,
+		isEmployee,
 		employee,
+		setisEmployee,
 		setEmployee,
 	};
 
@@ -35,11 +40,15 @@ export const AuthProvider = ({ children }) => {
 				// 3 is the employee_role for admin
 				if (response.employee_role === 3) {
 					setIsAdmin(true);
+				} else if (response.employee_role === 2) {
+					setisManager(true);
+				} else if (response.employee_role === 1) {
+					setisEmployee(true);
 				}
 				setEmployee(response);
 			}
 		});
 	}, []);
-	
+
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

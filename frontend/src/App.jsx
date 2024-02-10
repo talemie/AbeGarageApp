@@ -31,7 +31,8 @@ import ServicesPublic from "./markup/pages/ServicesPublic";
 import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
-import EmployeeLanding from "./markup/pages/Employee/EmployeeLanding";
+import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
+
 function App() {
 	return (
 		<>
@@ -47,10 +48,10 @@ function App() {
 
 				<Route path="/*" element={<Four04 />}></Route>
 				<Route
-					path="/landing"
+					path="/managerlanding"
 					element={
-						<PrivateAuthRoute roles={[1]}>
-							<EmployeeLanding />
+						<PrivateAuthRoute roles={[2]}>
+							<ManagerLanding />
 						</PrivateAuthRoute>
 					}
 				></Route>
@@ -106,7 +107,7 @@ function App() {
 				<Route
 					path="/admin/order"
 					element={
-						<PrivateAuthRoute roles={[1, 2, 3]}>
+						<PrivateAuthRoute roles={[2, 3]}>
 							<NewOrder />
 						</PrivateAuthRoute>
 					}

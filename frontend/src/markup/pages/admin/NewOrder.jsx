@@ -8,12 +8,12 @@ import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
 import AddOrder from "../../components/Admin/Orders/AddOrder/AddOrder";
 function NewOrder() {
 	// Destructure the auth hook
-	const { isLogged, isAdmin } = useAuth();
+	const { isLogged, isAdmin, isManager } = useAuth();
 
 	if (isLogged) {
 		// console.log("Kebede");
 
-		if (isAdmin) {
+		if (isAdmin || isManager) {
 			return (
 				<div>
 					<div className="container-fluid admin-pages">
