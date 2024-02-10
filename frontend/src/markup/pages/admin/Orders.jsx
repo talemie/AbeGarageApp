@@ -9,12 +9,12 @@ import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
 import OrdersList from "../../components/Admin/Orders/OrdersList/OrdersList";
 function Orders() {
 	// Destructure the auth hook
-	const { isLogged, isAdmin } = useAuth();
+	const { isLogged, isAdmin, isManager } = useAuth();
 
 	if (isLogged) {
 		// console.log("Kebede");
 
-		if (isAdmin) {
+		if (isAdmin||isManager) {
 			return (
 				<div>
 					<div className="container-fluid admin-pages">
@@ -31,8 +31,11 @@ function Orders() {
 			);
 		} else {
 			return (
-				<div>
-					<h1>You are not authorized to access this page</h1>
+				<div className="mt-5 ml-5">
+					<h1>Welcome Employees all orders are shown below</h1>
+					<div>
+						<OrdersList />
+					</div>
 				</div>
 			);
 		}

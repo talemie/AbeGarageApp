@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../../assets/images/logo.png";
 // Import the custom context hook
 import { useAuth } from "../../../Contexts/AuthContext";
@@ -8,14 +8,28 @@ import { Link } from "react-router-dom";
 
 function Header() {
 	// Use the custom hook to access the data in the context
-	const { isLogged, setIsLogged, employee } = useAuth();
+	const {
+		isLogged,
+		setIsLogged,
+		isAdmin,
+		setIsAdmin,
+		isManager,
+		setisManager,
+		employee,
+		isEmployee,
+		setisEmployee,
+		setEmployee,
+	} = useAuth();
 
-	// Log out event handler function
 	const logOut = () => {
 		// Call the logout function from the login service
 		loginService.logOut();
 		// Set the isLogged state to false
 		setIsLogged(false);
+		setIsAdmin(false);
+		setisEmployee(false);
+		setisManager(false);
+		setisEmployee(false);
 	};
 	return (
 		<div>
@@ -78,11 +92,42 @@ function Header() {
 												<li>
 													<a href="/contact">Contact Us</a>
 												</li>
+												{isAdmin ? (
+													<li className="mr-5 ">
+														<Link
+															className="text-primary"
+															to="/admin/dashboard"
+														>
+															Admin
+														</Link>
+													</li>
+												) : (
+													""
+												)}
+												{isManager ? (
+													<li className="mr-5">
+														<Link className="text-primary" to="/managerlanding">
+															Manager
+														</Link>
+													</li>
+												) : (
+													""
+												)}
+												{isEmployee ? (
+													<li className="mr-5">
+														<Link className="text-primary" to="/admin/orders">
+															Orders
+														</Link>
+													</li>
+												) : (
+													""
+												)}
 											</ul>
 										</div>
 									</nav>
 								</div>
-								<div className="search-btn"></div>
+								{!isLogged ? <div className="search-btn"></div> : ""}
+
 								{isLogged ? (
 									<div className="link-btn">
 										<Link
