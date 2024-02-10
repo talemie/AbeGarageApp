@@ -108,10 +108,17 @@ async function updateEmployee(EmployeeId, updatedData) {
 			EmployeeId,
 		]);
 
-		if (rows1.affectedRows !== 1 || rows2.affectedRows !== 1) {
+		const query3 =
+			"UPDATE employee_role SET company_role_id = ?  WHERE employee_id = ?";
+		const rows3 = await conn.query(query3, [
+			updatedData.company_role_id ,
+			EmployeeId,
+		]);
+
+		if (rows1.affectedRows !== 1 || rows2.affectedRows !== 1|| rows3.affectedRows !== 1) {
 			return false;
 		}
-
+		
 		// Construct the updated customer object to return
 		const updatedEmployee = {
 			employee_id: EmployeeId,

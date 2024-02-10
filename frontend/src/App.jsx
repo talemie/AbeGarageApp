@@ -16,6 +16,7 @@ import "./assets/styles/custom.css";
 // Import the Employees component
 
 import Employees from "./markup/pages/admin/Employees";
+import EmployeeEdit from "./markup/pages/admin/EmployeeEdit";
 import AddEmployee from "./markup/pages/admin/AddEmployee";
 import Unauthorized from "./markup/pages/Unauthorized";
 import Login from "./markup/pages/Login";
@@ -44,8 +45,11 @@ function App() {
 				<Route path="/admin/services" element={<ServicesManage />} />
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 				<Route path="/admin/employees" element={<Employees />}></Route>
+				<Route path="/admin/employee/edit/:id" element={<EmployeeEdit />}></Route>
+
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
+				
 				<Route
 					path="/admin/add-customer"
 					element={

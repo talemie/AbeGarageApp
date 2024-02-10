@@ -316,3 +316,15 @@ input:disabled {
   padding: 5px;
   color: red;
 }
+/* for Employee  */
+/* edit icon  */
+.edit-delete-icons{
+    display: flex;
+    align-items: center;
+    }
+    /* success message  */
+  .success-message{
+    color:green ;
+    font-size: 20px;
+    font-weight: bold;
+    }

@@ -1,6 +1,9 @@
 // Import the necessary components
 import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
+import { FiExternalLink } from "react-icons/fi";
 // Import the auth hook
 import { useAuth } from "../../../../Contexts/AuthContext";
 // Import the date-fns library
@@ -21,38 +24,7 @@ const EmployeesList = () => {
 	const { employee } = useAuth();
 	let token = null; // To store the token
 
-	// add state variables for edit and delete
-	const [selectedEmployee, setSelectedEmployee] = useState(null);
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-	// Function to handle edit click
-	const handleEditClick = (employee) => {
-		setSelectedEmployee(employee);
-		// You can open a modal or navigate to the edit page here
-		// For simplicity, let's just log the selected employee for now
-		console.log("Edit:", employee);
-	};
-
-	// Function to handle delete click
-	const handleDeleteClick = (employee) => {
-		setSelectedEmployee(employee);
-		setShowDeleteConfirmation(true);
-	};
-
-	// Function to confirm delete action
-	const handleDeleteConfirm = () => {
-		// Perform delete action here using the selectedEmployee data
-		// After successful delete, you can update the employees state accordingly
-		console.log("Delete:", selectedEmployee);
-		// Close delete confirmation
-		setShowDeleteConfirmation(false);
-	};
-
-	// Function to cancel delete action
-	const handleDeleteCancel = () => {
-		// Close delete confirmation
-		setShowDeleteConfirmation(false);
-	};
 
 	if (employee) {
 		token = employee.employee_token;
@@ -88,9 +60,7 @@ const EmployeesList = () => {
 
 	return (
 		<>
-			{showDeleteConfirmation &&
-				window.confirm("Are you sure you want to delete this employee?") &&
-				handleDeleteConfirm()}
+		
 			{apiError ? (
 				<section className="contact-section">
 					<div className="auto-container">
@@ -109,6 +79,7 @@ const EmployeesList = () => {
 							<Table striped bordered hover>
 								<thead>
 									<tr>
+										<th>Employee Id</th>
 										<th>Active</th>
 										<th>First Name</th>
 										<th>Last Name</th>
@@ -116,12 +87,13 @@ const EmployeesList = () => {
 										<th>Phone</th>
 										<th>Added Date</th>
 										<th>Role</th>
-										<th>Edit/Delete</th>
+										<th>Edit/View</th>
 									</tr>
 								</thead>
 								<tbody>
 									{employees.map((employee) => (
 										<tr key={employee.employee_id}>
+											<td>{employee.employee_id}</td>
 											<td>{employee.active_employee ? "Yes" : "No"}</td>
 											<td>{employee.employee_first_name}</td>
 											<td>{employee.employee_last_name}</td>
@@ -136,15 +108,20 @@ const EmployeesList = () => {
 											<td>{employee.company_role_name}</td>
 											<td>
 												<div className="edit-delete-icons">
-													{/* Edit button */}
-													<span onClick={() => handleEditClick(employee)}>
-														edit
-													</span>
-													{" | "}
-													{/* Delete button */}
-													<span onClick={() => handleDeleteClick(employee)}>
-														delete
-													</span>
+													{employee.fullName} {employee.email}
+													<Link
+														to={`/admin/employee/edit/${employee.employee_id}`}
+													>
+														<FaEdit />
+													</Link>
+													<button
+														onClick={() => {
+															handleDelete(employee.employee_id);
+														}}
+														type="button"
+													>
+														<FiExternalLink />
+													</button>
 												</div>
 											</td>
 										</tr>
