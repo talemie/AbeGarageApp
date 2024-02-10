@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import employee.service.js
 import employeeService from "../../../../services/employee.service";
+import { useAuth } from "../../../../Contexts/AuthContext";
 
 function AddEmployeeForm(props) {
 	const [employee_email, setEmail] = useState("");
@@ -16,6 +17,12 @@ function AddEmployeeForm(props) {
 	const [passwordError, setPasswordError] = useState("");
 	const [success, setSuccess] = useState(false);
 	const [serverError, setServerError] = useState("");
+
+		let loggedInEmployeeToken = "";
+		const { employee } = useAuth();
+		if (employee && employee.employee_token) {
+			loggedInEmployeeToken = employee.employee_token;
+		}
 
 	const handleSubmit = (e) => {
 		// Prevent the default behavior of the form
@@ -66,7 +73,10 @@ function AddEmployeeForm(props) {
 		};
 
 		// Pass the form data to the service
-		const newEmployee = employeeService.createEmployee(formData);
+		const newEmployee = employeeService.createEmployee(
+			formData,
+			loggedInEmployeeToken
+		);
 		newEmployee
 			.then((response) => response.json())
 			.then((data) => {

@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import loginService from "../../../services/login.service";
-
 function LoginForm(props) {
-	const navigate = useNavigate();
 	const location = useLocation();
 	const [employee_email, setEmail] = useState("");
 	const [employee_password, setPassword] = useState("");
@@ -12,6 +10,7 @@ function LoginForm(props) {
 	const [serverError, setServerError] = useState("");
 
 	// Function to handle the form submission.
+
 	const handleSubmit = async (e) => {
 		e.preventDefault(); // Prevents page refresh on submit.
 		// Handle client-side validation
@@ -60,6 +59,7 @@ function LoginForm(props) {
 			.then((response) => response.json())
 			.then((response) => {
 				console.log(response);
+
 				// If an error is returned from the API server, set the error message
 				if (response.status === "success") {
 					// Save the user in local storage
@@ -67,7 +67,7 @@ function LoginForm(props) {
 						console.log(response.data);
 						localStorage.setItem("employee", JSON.stringify(response.data));
 					}
-					// Navigate to admin
+					// // Navigate to admin
 					console.log(location);
 					if (location.pathname === "/login") {
 						window.location.replace("/");
@@ -84,7 +84,7 @@ function LoginForm(props) {
 				setServerError("An error has occurred. Please try again later");
 			});
 	};
-
+	// console.log(employee);
 	return (
 		<section className="contact-section">
 			<div className="auto-container">
