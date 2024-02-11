@@ -2,7 +2,7 @@
 const conn = require("../config/db.config");
 // import uuid and crypto module to have an order hashed id
 const crypto = require("crypto");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 // A function to check if customer exists in the database
 async function checkIfCustomerExists(customer_id) {
 	const query = "SELECT * FROM customer_identifier WHERE customer_id = ? ";
