@@ -1,19 +1,22 @@
-
 import React, { useState, useEffect } from "react";
 import { Table, Modal, Button } from "react-bootstrap";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import { format } from "date-fns";
-
-import customerService from "../../../../services/customer.service";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FaEdit } from "react-icons/fa";
+import { FiExternalLink } from "react-icons/fi";
 import {
 	faSearch,
-	faEdit,
-	faArrowLeft,
+	faAngleDoubleLeft,
+	faAngleLeft,
+	faAngleRight,
+	faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import customerServices from "../../../../services/customer.service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// Create the CustomersList component
+import { Link, useNavigate } from "react-router-dom";
+
 const CustomersList = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [customers, setCustomers] = useState([]);
@@ -25,59 +28,98 @@ const CustomersList = () => {
 	const [showActiveConfirmation, setShowActiveConfirmation] = useState(false);
 	const navigate = useNavigate();
 	const [searchTerm, setSearchTerm] = useState("");
-	const [searchResults, setSearchResults] = useState(customers);
-
-
-
-const handleSearch = () => {
-	const lowerCaseSearchTerm = searchTerm ? searchTerm.toLowerCase() : "";
-
-	const foundCustomer = customers.find((customer) => {
-		console.log("Customer Data:", customer); // Log the entire customer object
-
-		const {
-			customer_first_name,
-			customer_last_name,
-			customer_phone_number,
-			customer_email,
-		} = customer;
-
-		return (
-			(customer_first_name
-				? customer_first_name.toLowerCase().includes(lowerCaseSearchTerm)
-				: false) ||
-			(customer_last_name
-				? customer_last_name.toLowerCase().includes(lowerCaseSearchTerm)
-				: false) ||
-			(customer_phone_number
-				? customer_phone_number.includes(searchTerm)
-				: false) ||
-			(customer_email
-				? customer_email.toLowerCase().includes(lowerCaseSearchTerm)
-				: false)
-		);
+	const [searchResults, setSearchResults] = useState([]);
+	const [editedCustomer, setEditedCustomer] = useState({
+		customer_first_name: "",
+		customer_last_name: "",
+		customer_email: "",
+		customer_phone_number: "",
+		active: false,
 	});
+	const pageSize = 20; // Set the desired number of records per page
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 
-	console.log("Found Customer:", foundCustomer); // Log the found customer
+	const getCustomers = async () => {
+		try {
+			const response = await customerServices.getAllCustomers(token);
 
-	setSearchResults(foundCustomer ? [foundCustomer] : []);
-};
+			if (!response.ok) {
+				console.log(response.status);
+				setApiError(true);
 
+				if (response.status === 401) {
+					setApiErrorMessage("Please login again");
+				} else if (response.status === 403) {
+					setApiErrorMessage("You are not authorized to view this page");
+				} else {
+					setApiErrorMessage("Please try again later");
+				}
+			} else {
+				const data = await response.json();
+				setTotalPages(Math.ceil(data.customers.length / pageSize));
 
+				// Filter customers based on pagination
+				const start = (currentPage - 1) * pageSize;
+				const end = start + pageSize;
+				const paginatedCustomers = data.customers.slice(start, end);
+				setCustomers(paginatedCustomers);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		getCustomers();
+	}, [token, currentPage]);
 
-	  const handleEditClick = (customer) => {
-			setSelectedCustomer(customer);
-			setShowModal(true);
-			navigate("/admin/customr/edit/:id");
-			console.log("Edit:", customer);
-		};
-
-	const handleModalClose = () => {
-		setShowModal(false);
+	const handleFirstClick = () => {
+		console.log("Handling First Click");
+		setCurrentPage(1);
 	};
 
-	const handleSaveChanges = () => {
-		setShowModal(false);
+	const handlePreviousClick = () => {
+		console.log("Handling Previous Click");
+		if (currentPage > 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const handleNextClick = () => {
+		console.log("Handling Next Click");
+		if (currentPage < totalPages) {
+			setCurrentPage(currentPage + 1);
+		}
+	};
+
+	const handleLastClick = () => {
+		console.log("Handling Last Click");
+		setCurrentPage(totalPages);
+	};
+
+	const handleSearch = (event) => {
+		const searchTerm = event.target.value.toLowerCase();
+		setSearchTerm(searchTerm);
+		if (!searchTerm || searchTerm.trim() === "") {
+			setSearchResults([]);
+		} else {
+			const filteredCustomers = customers.filter((customer) => {
+				const firstName =
+					(customer?.customer_first_name || "").toLowerCase() || "";
+				const lastName =
+					(customer?.customer_last_name || "").toLowerCase() || "";
+				const email = (customer?.customer_email || "").toLowerCase() || "";
+				const phone =
+					(customer?.customer_phone_number || "").toLowerCase() || "";
+				return (
+					firstName.includes(searchTerm) ||
+					lastName.includes(searchTerm) ||
+					email.includes(searchTerm) ||
+					phone.includes(searchTerm)
+				);
+			});
+			setSearchResults(filteredCustomers);
+		}
 	};
 
 	const handleActiveClick = (customer) => {
@@ -85,89 +127,65 @@ const handleSearch = () => {
 		setShowActiveConfirmation(true);
 	};
 
-	const handleActiveConfirm = () => {
-		console.log("Active:", selectedCustomer);
+	const handleConfirmActive = () => {
+		if (selectedCustomer) {
+			const updatedCustomers = customers.map((customer) =>
+				customer.customer_id === selectedCustomer.customer_id
+					? {
+							...customer,
+							active_customer_status:
+								customer.active_customer_status === 1 ? 0 : 1,
+					  }
+					: customer
+			);
+			setCustomers(updatedCustomers);
+
+			// Check if the active status was updated from 'no' to 'yes' or vice versa
+			const prevActiveStatus =
+				selectedCustomer.active_customer_status === 1 ? "yes" : "no";
+			const currentActiveStatus =
+				updatedCustomers.find(
+					(customer) => customer.customer_id === selectedCustomer.customer_id
+				).active_customer_status === 1
+					? "yes"
+					: "no";
+
+			// If the active status changed, update the editedCustomer state
+			if (prevActiveStatus !== currentActiveStatus) {
+				setEditedCustomer((prevEditedCustomer) => ({
+					...prevEditedCustomer,
+					active: currentActiveStatus === "yes",
+				}));
+			}
+		}
+
+		// Close the modal and reset selectedCustomer
 		setShowActiveConfirmation(false);
+		setSelectedCustomer(null);
 	};
 
-	const handleActiveCancel = () => {
+	const handleCancelActive = () => {
 		setShowActiveConfirmation(false);
 	};
-
-	if (customer) {
-		token = customer.employee_token;
-	}
-
-	useEffect(() => {
-		// Call the getAllCustomers function
-		const allCustomers = customerService.getAllCustomers(token);
-		allCustomers
-			.then((res) => {
-				if (!res.ok) {
-					console.log(res.status);
-					setApiError(true);
-					if (res.status === 401) {
-						setApiErrorMessage("Please login again");
-					} else if (res.status === 403) {
-						setApiErrorMessage("You are not authorized to view this page");
-					} else {
-						setApiErrorMessage("Please try again later");
-					}
-					throw new Error("API error");
-				}
-				return res.json();
-			})
-			.then((data) => {
-				// Check if data and data.customers are defined
-				if (data && data.customers) {
-					if (data.customers.length !== 0) {
-						setCustomers(data.customers);
-					} else {
-						setCustomers([]);
-					}
-				} else {
-					setCustomers([]);
-				}
-			})
-			.catch((err) => {
-				// Handle error
-				console.error(err);
-			});
-	}, []); // Include token as a dependency
 
 	return (
 		<>
-			{showModal && (
-				<Modal show={showModal} onHide={handleModalClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>Edit Customer</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						{/* Render the form or content for editing */}
-						{/* For example: */}
-						<form>{/* form fields */}</form>
-					</Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={handleModalClose}>
-							Close
-						</Button>
-						<Button variant="primary" onClick={handleSaveChanges}>
-							Save Changes
-						</Button>
-					</Modal.Footer>
-				</Modal>
-			)}
-			{showActiveConfirmation && (
-				<div>
-					<p>Are you sure you want to activate this customer?</p>
-					<Button variant="success" onClick={handleActiveConfirm}>
-						Yes
-					</Button>{" "}
-					<Button variant="danger" onClick={handleActiveCancel}>
-						No
+			<Modal show={showActiveConfirmation} onHide={handleCancelActive}>
+				<Modal.Header closeButton>
+					<Modal.Title>Confirm Active Status</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Are you sure you want to change the active status?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleCancelActive}>
+						Cancel
 					</Button>
-				</div>
-			)}
+					<Button variant="primary" onClick={handleConfirmActive}>
+						Confirm
+					</Button>
+				</Modal.Footer>
+			</Modal>
 			{apiError ? (
 				<section className="contact-section">
 					<div className="auto-container">
@@ -187,9 +205,9 @@ const handleSearch = () => {
 								<input
 									type="text"
 									value={searchTerm}
-									onChange={(e) => setSearchTerm(e.target.value)}
-									placeholder="Search customers..."
-									style={{ width: "100%" }}
+									onChange={handleSearch}
+									placeholder="Search for customers using first name, last name, email, or phone number..."
+									style={{ width: "100%", height: "40px" }}
 								/>
 								<FontAwesomeIcon
 									icon={faSearch}
@@ -203,7 +221,7 @@ const handleSearch = () => {
 									}}
 								/>
 							</div>
-<br />
+							<br />
 							<Table striped bordered hover>
 								<thead>
 									<tr>
@@ -218,49 +236,133 @@ const handleSearch = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{customers.map((customer) => (
-										<tr key={customer.customer_id}>
-											<td>{customer.customer_id}</td>
-											<td>{customer.customer_first_name}</td>
-											<td>{customer.customer_last_name}</td>
-											<td>{customer.customer_email}</td>
-											<td>{customer.customer_phone_number}</td>
-											<td>{customer.customer_added_date}</td>
-											<td>
-												{customer.active_customer_status === 1 ? (
-													<Button
-														variant="danger"
-														onClick={() => handleActiveClick(customer)}
-													>
-														No
-													</Button>
-												) : (
-													<Button
-														variant="success"
-														onClick={() => handleActiveClick(customer)}
-													>
-														Yes
-													</Button>
-												)}
-											</td>
-											<td>
-												<button onClick={() => handleEditClick(customer)}>
-													<FontAwesomeIcon icon={faEdit} />
-													Edit
-												</button>
-											</td>
-										</tr>
-									))}
+									{searchResults.length > 0
+										? searchResults.map((customer) => (
+												<tr key={customer.customer_id}>
+													<td>{customer.customer_id}</td>
+													<td>{customer.customer_first_name}</td>
+													<td>{customer.customer_last_name}</td>
+													<td>{customer.customer_email}</td>
+													<td>{customer.customer_phone_number}</td>
+													<td>{customer.customer_added_date}</td>
+													<td>
+														<Button
+															variant={
+																customer.active_customer_status === 1
+																	? "success"
+																	: "danger"
+															}
+															onClick={() => handleActiveClick(customer)}
+														>
+															{customer.active_customer_status === 1
+																? "Yes"
+																: "No"}
+														</Button>
+													</td>
+													<td>
+														<div className="edit-delete-icons">
+															<Link
+																to={`/admin/customer/edit/${customer.customer_id}`}
+															>
+																<FaEdit />
+															</Link>{" "}
+															|{" "}
+															<Link to="/admin/customer/{customerId}">
+																<FiExternalLink />
+															</Link>
+														</div>
+													</td>
+												</tr>
+										  ))
+										: customers.map((customer) => (
+												<tr key={customer.customer_id}>
+													<td>{customer.customer_id}</td>
+													<td>{customer.customer_first_name}</td>
+													<td>{customer.customer_last_name}</td>
+													<td>{customer.customer_email}</td>
+													<td>{customer.customer_phone_number}</td>
+													<td>{customer.customer_added_date}</td>
+													<td>
+														<Button
+															variant={
+																customer.active_customer_status === 1
+																	? "success"
+																	: "danger"
+															}
+															onClick={() => handleActiveClick(customer)}
+														>
+															{customer.active_customer_status === 1
+																? "Yes"
+																: "No"}
+														</Button>
+													</td>
+													<td>
+														<div className="edit-delete-icons">
+															<Link
+																to={`/admin/customer/edit/${customer.customer_id}`}
+															>
+																<FaEdit />
+															</Link>{" "}
+															|{" "}
+															<Link to="/admin/customer/{customerId}">
+																<FiExternalLink />
+															</Link>
+														</div>
+													</td>
+												</tr>
+										  ))}
 								</tbody>
-								</Table>
-								
+							</Table>
 						</div>
 					</section>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							marginBottom: "20px",
+							alignItems: "center", // Centering vertically
+						}}
+					>
+						<button
+							onClick={handleFirstClick}
+							disabled={currentPage === 1}
+							style={{ backgroundColor: "yellow", marginRight: "10px" }}
+						>
+							<FontAwesomeIcon icon={faAngleDoubleLeft} /> First
+						</button>
+						<button
+							onClick={handlePreviousClick}
+							disabled={currentPage === 1}
+							style={{ backgroundColor: "yellow", marginRight: "10px" }}
+						>
+							<FontAwesomeIcon icon={faAngleLeft} /> Previous
+						</button>
+						<span style={{ margin: "0 10px" }}>
+							Page {currentPage} of {totalPages}
+						</span>
+						<button
+							onClick={handleNextClick}
+							disabled={currentPage === totalPages}
+							style={{
+								backgroundColor: "black",
+								color: "white",
+								marginRight: "10px",
+							}}
+						>
+							Next <FontAwesomeIcon icon={faAngleRight} />
+						</button>
+						<button
+							onClick={handleLastClick}
+							disabled={currentPage === totalPages}
+							style={{ backgroundColor: "black", color: "white" }}
+						>
+							Last <FontAwesomeIcon icon={faAngleDoubleRight} />
+						</button>
+					</div>
 				</>
 			)}
 		</>
 	);
 };
 
-// Export the CustomersList component
 export default CustomersList;
