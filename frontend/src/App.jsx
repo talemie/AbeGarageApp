@@ -33,13 +33,14 @@ import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
 import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
-
+import CustomerProfile from "./markup/components/Admin/AddCustomer/customerProfile";
 function App() {
 	return (
 		<>
 			<Header />
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
+				<Route path="/CustomerProfile" element={<CustomerProfile />}></Route>
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
@@ -124,6 +125,7 @@ function App() {
 				/> */}
 			</Routes>
 			<Footer />
+			
 		</>
 	);
 }
