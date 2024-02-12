@@ -25,7 +25,7 @@ import AddCustomers from "./markup/pages/admin/AddCustomers";
 import Customers from "./markup/pages/admin/Customers";
 import AdminDashboard from "./markup/pages/admin/Dashboard";
 import ServicesManage from "./markup/pages/admin/ServicesManage";
-
+import CustomerEditPage from "./markup/pages/admin/CustomerEditPage";
 // Import the PrivateAuthRoute component
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import ServicesPublic from "./markup/pages/ServicesPublic";
@@ -45,7 +45,10 @@ function App() {
 				<Route path="/admin/services" element={<ServicesManage />} />
 				<Route path="/unauthorized" element={<Unauthorized />}></Route>
 
-				<Route path="/admin/employee/edit/:id" element={<EmployeeEdit />}></Route>
+				<Route
+					path="/admin/employee/edit/:id"
+					element={<EmployeeEdit />}
+				></Route>
 
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
@@ -79,6 +82,14 @@ function App() {
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>
 							<Customers />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/customer/edit/:id"
+					element={
+						<PrivateAuthRoute roles={[2, 3]}>
+							<CustomerEditPage />
 						</PrivateAuthRoute>
 					}
 				/>
