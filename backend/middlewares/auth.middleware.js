@@ -31,6 +31,28 @@ console.log(token)
     next();
   });
 }
+const isManager = async (req, res, next) => {
+  try {
+    const employee_email = req.employee_email;
+    const employee = await employeeService.getEmployeeByEmail(employee_email);
+    
+    if (employee.length > 0 && employee[0].company_role_id === 3||  employee[0].company_role_id === 2) {
+      // User is an employee, proceed to the next middleware or route handler
+      next();
+    } else {
+      return res.status(403).json({
+        status: "fail",
+        error: "you don't have access!"
+      });
+    }
+  } catch (error) {
+    console.error('Error checking employee status:', error.message);
+    return res.status(500).json({
+      status: "error",
+      error: "Internal Server Error"
+    });
+  }
+};
 
 // A function to check if the user is an admin
 const isAdmin = async (req, res, next) => {
@@ -51,6 +73,7 @@ const isAdmin = async (req, res, next) => {
 
 const authMiddleware = {
   verifyToken,
+  isManager,
   isAdmin
 }
 

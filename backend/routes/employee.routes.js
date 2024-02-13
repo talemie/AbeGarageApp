@@ -11,7 +11,7 @@ router.post("/api/employee",[authMiddleware.verifyToken, authMiddleware.isAdmin]
 // Create a route to handle the get all employees request on get
 router.get("/api/employees",[authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getAllEmployees);
 // Create a route to handle the get single employee request on get
-router.get("/api/employee/:id",[authMiddleware.verifyToken, authMiddleware.isAdmin],employeeController.getSingleEmployee);
+router.get("/api/employee/:id", employeeController.getSingleEmployee);
 // Updateroutes for employee
 router.put("/api/employee/:id",[authMiddleware.verifyToken, authMiddleware.isAdmin],employeeController.updateEmployee);
 
