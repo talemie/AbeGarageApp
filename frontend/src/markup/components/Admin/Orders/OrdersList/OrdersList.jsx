@@ -192,7 +192,7 @@ function OrdersList() {
 									<th>Order Date</th>
 									<th>Received By</th>
 									<th>Order Status</th>
-									<th>View/Edit</th>
+									<th>Edit/View</th>
 								</tr>
 							</thead>
 							<tbody>
