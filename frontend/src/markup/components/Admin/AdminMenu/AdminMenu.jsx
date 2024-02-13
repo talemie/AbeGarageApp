@@ -21,9 +21,9 @@ function AdminMenu(props) {
 						<Link to="/admin/orders" className="list-group-item">
 							Orders
 						</Link>
-						<a href="/admin/order" className="list-group-item">
+						<Link to="/admin/order" className="list-group-item">
 							New order
-						</a>
+						</Link>
 						<Link to="/admin/add-employee" className="list-group-item">
 							Add employee
 						</Link>
