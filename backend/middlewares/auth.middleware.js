@@ -18,7 +18,7 @@ const verifyToken = async (req, res, next) => {
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-console.log(token)
+// console.log(token)
     if (err) {
       return res.status(401).send({
         status: "fail",
