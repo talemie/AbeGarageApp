@@ -1,44 +1,118 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import serviceService from "../../../../services/service.service";
 import { useNavigate } from "react-router-dom";
-// Create the servicesList component
-const servicesList = () => {
-	const [services, setservices] = useState([]);
+
+const ServicesList = () => {
+	const [services, setServices] = useState([]);
 	const [apiError, setApiError] = useState(false);
 	const [apiErrorMessage, setApiErrorMessage] = useState(null);
-	const [selectedservice, setSelectedservice] = useState(null);
+	const [selectedService, setSelectedService] = useState(null);
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-	const [addService, setAddService] = useState([]);
+	const [newService, setNewService] = useState({ name: "", description: "" });
 	const navigate = useNavigate();
 	const { service } = useAuth();
 	let token = null;
 	const [loading, setLoading] = useState(true);
 
-	// Function to handle edit click
-
-	const handleEditClick = (service) => {
-		setSelectedservice(service);
-		navigate(`/admin/service/edit/` + service.service_id);
-		console.log("Edit:", service);
-	};
-
-	// Function to handle delete click
-	const handleDeleteClick = (service) => {
-		setSelectedservice(service);
-		setShowDeleteConfirmation(true);
-	};
-	const handleAddService = (addService) => {
-		setAddService(e.target.value);
-	};
-
 	// Function to confirm delete action
 	const handleDeleteConfirm = () => {
-		console.log("Delete:", selectedservice);
+		console.log("Delete:", selectedService);
 		setShowDeleteConfirmation(false);
+	};
+
+	// Function to handle input changes for adding a new service
+	const handleAddServiceInputChange = (e) => {
+		const { name, value } = e.target;
+		setNewService((prevService) => ({ ...prevService, [name]: value }));
+	};
+
+	// Function to handle adding a new service
+	const handleAddService = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await serviceService.createService(token, newService);
+
+			if (!response.ok) {
+				setApiError(true);
+				if (response.status === 401) {
+					setApiErrorMessage("Please login again!");
+				} else if (response.status === 403) {
+					setApiErrorMessage("You are not authorized to perform this action!");
+				} else {
+					setApiErrorMessage(
+						"Failed to add a new service. Please try again later!"
+					);
+				}
+				throw new Error("Failed to add a new service!!");
+			}
+
+			const data = await response.json();
+
+			if (data && data.service_id) {
+				setServices((prevServices) => [...prevServices, data]);
+				// Clear the input fields after adding a new service
+				setNewService({ name: "", description: "" });
+			}
+
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+			setApiError(true);
+			setApiErrorMessage("An error occurred while adding a new service.");
+			setLoading(false);
+		}
+	};
+	// Function to handle edit click
+
+	const handleEditService = (selectedService) => {
+		navigate(`/admin/service/edit/` + selectedService.service_id);
+		const updatedServices = services.map((service) =>
+			service.service_id === selectedService.service_id
+				? selectedService
+				: service
+		);
+		setServices(updatedServices);
+		setSelectedService(null); // Clear selectedService after editing
+	};
+
+	// Function to handle deleting a service
+	const handleDeleteService = async () => {
+		try {
+			const response = await serviceService.deleteService(
+				token,
+				selectedService.service_id
+			);
+
+			if (!response.ok) {
+				setApiError(true);
+				if (response.status === 401) {
+					setApiErrorMessage("Please login again!");
+				} else if (response.status === 403) {
+					setApiErrorMessage("You are not authorized to perform this action!");
+				} else {
+					setApiErrorMessage(
+						"Failed to delete the service. Please try again later!"
+					);
+				}
+				throw new Error("Failed to delete the service!!");
+			}
+
+			// Remove the deleted service from the state
+			const updatedServices = services.filter(
+				(service) => service.service_id !== selectedService.service_id
+			);
+			setServices(updatedServices);
+			setShowDeleteConfirmation(false); // Close delete confirmation modal
+			setSelectedService(null); // Clear selectedService after deleting
+		} catch (error) {
+			console.error(error);
+			setApiError(true);
+			setApiErrorMessage("An error occurred while deleting the service.");
+		}
 	};
 
 	useEffect(() => {
@@ -64,7 +138,7 @@ const servicesList = () => {
 				})
 				.then((data) => {
 					if (data && data.length !== 0) {
-						setservices(data.services);
+						setServices(data.services);
 					}
 					setLoading(false);
 				})
@@ -75,12 +149,7 @@ const servicesList = () => {
 		};
 		getServices();
 	}, []);
-	console.log(services);
-	// if (loading) {
-	// 	return <div>Loading...</div>;
-	// }
-
-	// Create the ServicesList component
+	// console.log(services);
 
 	return (
 		<>
@@ -121,12 +190,12 @@ const servicesList = () => {
 											<div className="edit-delete-icons ">
 												<span
 													className="text-danger pr-2"
-													onClick={() => handleEditClick(service)}
+													onClick={() => handleEditService(selectedService)}
 												>
 													<FaEdit />
 												</span>
 
-												<span onClick={() => handleDeleteClick(service)}>
+												<span onClick={() => handleDeleteService(service)}>
 													<MdDelete />
 												</span>
 											</div>
@@ -196,4 +265,4 @@ const servicesList = () => {
 	);
 };
 
-export default servicesList;
+export default ServicesList;
