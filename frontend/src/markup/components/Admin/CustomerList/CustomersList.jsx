@@ -22,7 +22,7 @@ const CustomersList = () => {
 	const [customers, setCustomers] = useState([]);
 	const [apiError, setApiError] = useState(false);
 	const [apiErrorMessage, setApiErrorMessage] = useState(null);
-	const { customer } = useAuth();
+	const { employee, customer } = useAuth();
 	let token = null;
 	const [selectedCustomer, setSelectedCustomer] = useState(null);
 	const [showActiveConfirmation, setShowActiveConfirmation] = useState(false);
@@ -39,7 +39,9 @@ const CustomersList = () => {
 	const pageSize = 20; // Set the desired number of records per page
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-
+if (employee) {
+			token = employee.employee_token;
+		}
 	const getCustomers = async () => {
 		try {
 			const response = await customerServices.getAllCustomers(token);
