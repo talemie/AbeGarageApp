@@ -33,7 +33,7 @@ import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
 import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
-import CustomerProfile from "./markup/components/Admin/AddCustomer/customerProfile";
+import CustomerProfile from "./markup/pages/admin/customerProfile";
 function App() {
 	return (
 		<>
@@ -126,19 +126,19 @@ function App() {
 						</PrivateAuthRoute>
 					}
 				/>
-				{/* <Route
+				 <Route
 					path="/admin/service/edit/:id"
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>
 							<EditService />
 						</PrivateAuthRoute>
 					}
-				/> */}
+				/>
 			</Routes>
 			<Footer />
 			
 		</>
 	);
-}
+} 
 
 export default App;
