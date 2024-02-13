@@ -56,7 +56,7 @@ function OrdersList() {
 				// console.log("customer ids:", customerIds);
 				const responses = await Promise.all(
 					customerIds.map((customerId) =>
-						customerService.getCustomer(customerId)
+						customerService.getCustomer(token,customerId)
 					)
 				);
 				// console.log("responses from get customer:", responses);

@@ -40,7 +40,7 @@ function CustomerVehicle({ customer, vehicles }) {
 	// a function to fetch services
 	useEffect(() => {
 		const services = async () => {
-			const response = await serviceService.getServices();
+			const response = await serviceService.getAllServices();
 			const jsonResponse = await response.json();
 
 			setServices(jsonResponse.services);
