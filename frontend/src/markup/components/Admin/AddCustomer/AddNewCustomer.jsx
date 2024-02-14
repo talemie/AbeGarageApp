@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import customerService from "../../../../services/customer.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AddNewCustomer(props) {
+	const navigate = useNavigate();
 	const [customer_email, setEmail] = useState("");
 	const [customer_phone_number, setPhoneNumber] = useState("");
 	const [customer_first_name, setFirstName] = useState("");
@@ -81,8 +83,8 @@ function AddNewCustomer(props) {
 					setSuccess(true);
 					setServerError("");
 					setTimeout(() => {
-						window.location.href = "/";
-					}, 2000);
+						navigate("/admin/customers");
+					}, 1500);
 				} else {
 					setServerError("Failed to create a new customer");
 				}

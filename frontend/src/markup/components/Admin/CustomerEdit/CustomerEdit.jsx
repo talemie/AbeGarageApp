@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import customerServices from "../../../../services/customer.service";
@@ -23,16 +21,16 @@ function CustomerEdit() {
 	const [success, setSuccess] = useState(false);
 	const [updateSuccess, setUpdateSuccess] = useState(false);
 
-	let loggedInCustomerToken = "";
+	let loggedInEmployeeToken = "";
 
-	const { customer } = useAuth();
-	if (customer && customer.employee_token) {
-		// loggedInCustomerToken = customer.employee_token;
+	const { employee } = useAuth();
+	if (employee) {
+		loggedInEmployeeToken = employee.employee_token;
 	}
 
 	const handleInputChange = (e) => {
 		const { name, value, type, checked } = e.target;
-		// console.log(name, value); 
+		// console.log(name, value);
 
 		if (type === "checkbox") {
 			setCustomerValue((prevCustomer) => ({
@@ -47,34 +45,33 @@ function CustomerEdit() {
 		}
 	};
 
-useEffect(() => {
-	const singleCustomer = customerServices.getCustomer(
-		loggedInCustomerToken,
-		id
-	);
+	useEffect(() => {
+		const singleCustomer = customerServices.getCustomer(
+			loggedInEmployeeToken,
+			id
+		);
 
-	singleCustomer
-		.then((response) => response.json())
-		.then((data) => {
-			// console.log(data); 
+		singleCustomer
+			.then((response) => response.json())
+			.then((data) => {
+				// console.log(data);
 
-			if (data) {
-				setgetCustomer(data);
-				setCustomerValue({
-					customer_phone_number: data.customer_phone_number || "",
-					customer_first_name: data.customer_first_name || "",
-					customer_last_name: data.customer_last_name || "",
-					active_customer_status: data.active_customer_status ,
-				});
-			} else {
-				console.error("Invalid data structure:", data);
-			}
-		})
-		.catch((err) => {
-			console.error("Error fetching customer data:", err);
-		});
-}, [id]);
-
+				if (data) {
+					setgetCustomer(data);
+					setCustomerValue({
+						customer_phone_number: data.customer_phone_number || "",
+						customer_first_name: data.customer_first_name || "",
+						customer_last_name: data.customer_last_name || "",
+						active_customer_status: data.active_customer_status,
+					});
+				} else {
+					console.error("Invalid data structure:", data);
+				}
+			})
+			.catch((err) => {
+				console.error("Error fetching customer data:", err);
+			});
+	}, [id, loggedInEmployeeToken]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -82,7 +79,7 @@ useEffect(() => {
 		const updateCustomer = customerServices.updateCustomer(
 			id,
 			customerValue,
-			loggedInCustomerToken
+			loggedInEmployeeToken
 		);
 
 		updateCustomer
@@ -173,7 +170,10 @@ useEffect(() => {
 											</button>
 										</div>
 										{updateSuccess && (
-											<div style={{ color: "green" }} className="success-message">
+											<div
+												style={{ color: "green" }}
+												className="success-message"
+											>
 												Data updated successfully!
 											</div>
 										)}
@@ -189,17 +189,3 @@ useEffect(() => {
 }
 
 export default CustomerEdit;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
