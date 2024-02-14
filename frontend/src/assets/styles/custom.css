@@ -213,8 +213,8 @@ input:disabled {
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 2px 5px;
 }
 .checkbox-holder input[type="checkbox"] {
-	width: 40px;
-	height: 40px;
+	width: 20px;
+	height: 20px;
 }
 .theme-btn a {
 	color: #fff;
