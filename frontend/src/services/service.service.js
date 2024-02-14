@@ -32,6 +32,23 @@ async function getAllServices() {
 		throw error;
 	}
 }
+// A function to send get request to a single Service
+const getSingleService = async (serviceId) => { 
+    const requestOptions = {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				// "x-access-token": token,
+			},
+		};
+		const response = await fetch(
+			`${api_url}/api/service/${serviceId}`,
+			requestOptions
+		);
+		// console.log('service:',response);
+		return response;
+}
+
 async function updateService(service_Id, updatedService) {
 	const request = {
 		method: "PUT",
@@ -74,6 +91,7 @@ const serviceService = {
 	getAllServices,
 	updateService,
 	deleteService,
+	getSingleService,
 };
 
 // Export the functions
