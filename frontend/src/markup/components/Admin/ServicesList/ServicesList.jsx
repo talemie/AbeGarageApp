@@ -3,9 +3,10 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import serviceService from "../../../../services/service.service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ServiceEdit from "../ServiceEdit/ServiceEdit";
 
-const ServicesList = () => {
+const ServicesList = (editClicked) => {
 	const [services, setServices] = useState([]);
 	const [apiError, setApiError] = useState(false);
 	const [apiErrorMessage, setApiErrorMessage] = useState(null);
@@ -17,67 +18,86 @@ const ServicesList = () => {
 	let token = null;
 	const [loading, setLoading] = useState(true);
 
+	// const handleNavigation = (e, service) => {
+	// 	e.preventDefault();
+	// 	if (service && service.service_id) {
+	// 		navigate(`/admin/services/` + service.service_id);
+	// 	} else {
+	// 		console.error("Invalid service:", service);
+	// 	}
+	// };
 	// Function to confirm delete action
 	const handleDeleteConfirm = () => {
 		console.log("Delete:", selectedService);
 		setShowDeleteConfirmation(false);
 	};
 
-	// Function to handle input changes for adding a new service
-	const handleAddServiceInputChange = (e) => {
-		const { name, value } = e.target;
-		setNewService((prevService) => ({ ...prevService, [name]: value }));
-	};
-
 	// Function to handle adding a new service
-	const handleAddService = async (e) => {
+	const handleAddService = (e) => {
 		e.preventDefault();
-
-		try {
-			const response = await serviceService.createService(token, newService);
-
-			if (!response.ok) {
-				setApiError(true);
-				if (response.status === 401) {
-					setApiErrorMessage("Please login again!");
-				} else if (response.status === 403) {
-					setApiErrorMessage("You are not authorized to perform this action!");
-				} else {
-					setApiErrorMessage(
-						"Failed to add a new service. Please try again later!"
-					);
-				}
-				throw new Error("Failed to add a new service!!");
-			}
-
-			const data = await response.json();
-
-			if (data && data.service_id) {
-				setServices((prevServices) => [...prevServices, data]);
-				// Clear the input fields after adding a new service
-				setNewService({ name: "", description: "" });
-			}
-
-			setLoading(false);
-		} catch (error) {
-			console.error(error);
-			setApiError(true);
-			setApiErrorMessage("An error occurred while adding a new service.");
-			setLoading(false);
+		if (!newService.name || !newService.description) {
+			// Handle validation errors or show a message
+			alert("Name and description fields cannot be empty!");
+			return;
 		}
-	};
-	// Function to handle edit click
+		setLoading(true);
 
-	const handleEditService = (selectedService) => {
-		navigate(`/admin/service/edit/` + selectedService.service_id);
-		const updatedServices = services.map((service) =>
-			service.service_id === selectedService.service_id
-				? selectedService
-				: service
-		);
-		setServices(updatedServices);
-		setSelectedService(null); // Clear selectedService after editing
+		serviceService
+			.createService(token, newService)
+			.then((response) => {
+				if (!response.ok) {
+					setApiError(true);
+					let errorMessage =
+						"Failed to add a new service. Please try again later!";
+					if (response.status === 401) {
+						errorMessage = "Please login again!";
+					} else if (response.status === 403) {
+						errorMessage = "You are not authorized to add a new service!";
+					}
+
+					setApiErrorMessage(errorMessage);
+					throw new Error(`Failed to add a new service: ${errorMessage}`);
+				}
+
+				return response.json();
+			})
+			.then((data) => {
+				if (data && data.service_id) {
+					setServices((prevServices) => [...prevServices, data]);
+					// Clear the input fields after adding a new service
+					setNewService({ name: "", description: "" });
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				setApiError(true);
+				setApiErrorMessage("An error occurred while adding a new service.");
+			})
+			.finally(() => {
+				setLoading(false);
+			});
 	};
+
+	// // Function to handle edit click
+	// const handleEditService = (service.service_id) => {
+	// 	console.log(
+	// 		"Calling handleEditService with selectedService:",
+	// 		service.service_id
+	// 	);
+
+	// 	if (selectedService && selectedService.service_id) {
+	// 		// navigate(`/admin/services/` + service.service_id);
+	// 		const updatedServices = services((service) =>
+	// 			service.service_id === selectedService.service_id
+	// 				? selectedService
+	// 				: service
+	// 		);
+	// 		setServices(updatedServices);
+	// 		setSelectedService(null);
+	// 	} else {
+	// 		console.error("Invalid selectedService:", selectedService);
+	// 	}
+	// };
 
 	// Function to handle deleting a service
 	const handleDeleteService = async () => {
@@ -122,7 +142,7 @@ const ServicesList = () => {
 		const getServices = async () => {
 			allServices
 				.then((res) => {
-					console.log(res);
+					// console.log(res);
 					if (!res.ok) {
 						setApiError(true);
 						if (res.status === 401) {
@@ -149,7 +169,6 @@ const ServicesList = () => {
 		};
 		getServices();
 	}, []);
-	// console.log(services);
 
 	return (
 		<>
@@ -188,14 +207,19 @@ const ServicesList = () => {
 										</div>
 										<div className="col-1 ">
 											<div className="edit-delete-icons ">
-												<span
+												<Link
+													to={`/admin/service/edit/${service.service_id}`}
 													className="text-danger pr-2"
-													onClick={() => handleEditService(selectedService)}
+													onClick={() => editClicked(true)}
 												>
 													<FaEdit />
-												</span>
+												</Link>
 
-												<span onClick={() => handleDeleteService(service)}>
+												<span
+													onClick={() =>
+														handleDeleteService(service.service_id)
+													}
+												>
 													<MdDelete />
 												</span>
 											</div>
@@ -218,7 +242,7 @@ const ServicesList = () => {
 								<div className="contact-form">
 									<form onSubmit={handleAddService}>
 										<div className="row clearfix">
-											<div className="form-group col-md-12">
+											<div className="form-group col-md-9">
 												<input
 													type="text"
 													name="form_subject"
@@ -228,7 +252,7 @@ const ServicesList = () => {
 													}}
 												/>
 											</div>
-											<div className="form-group col-md-12">
+											<div className="form-group col-md-9">
 												<textarea
 													name="form_message"
 													placeholder="Service description"
