@@ -32,6 +32,7 @@ async function getAllServices() {
 		throw error;
 	}
 }
+
 async function getSingleService(id) {
 	const request = {
 		method: "GET",
@@ -45,6 +46,8 @@ async function getSingleService(id) {
 		console.error("Error fetching single service:", error);
 		throw error;
 	}
+
+
 }
 
 async function updateService(service_Id, updatedService) {
@@ -90,6 +93,7 @@ const serviceService = {
 	getSingleService,
 	updateService,
 	deleteService,
+	getSingleService,
 };
 
 // Export the functions

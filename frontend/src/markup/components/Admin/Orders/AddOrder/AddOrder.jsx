@@ -3,6 +3,7 @@ import customerService from "../../../../../services/customer.service";
 import CustomerVehicle from "../CustomerVehicle/CustomerVehicle";
 import vehicleService from "../../../../../services/vehicle.service";
 import SearchCustomer from "../SearchCustomer/SearchCustomer";
+import { useAuth } from "../../../../../Contexts/AuthContext";
 
 function AddOrder() {
 	const [apiError, setApiError] = useState(false);
@@ -13,11 +14,16 @@ function AddOrder() {
 	const [isCustomerSelected, setIsCustomerSelected] = useState(false);
 	const [selectedCustomer, setSelectedCustomer] = useState({});
 	const [customerVehicles, setCustomerVehicles] = useState([]);
+	const { employee } = useAuth();
 	useEffect(() => {
+		let token = null;
+		if (employee) {
+			token = employee.employee_token;
+		}
 		// fetch all customers - later to be filtered
 		const getCustomers = async () => {
 			try {
-				let response = await customerService.getAllCustomers();
+				let response = await customerService.getAllCustomers(token);
 				if (!response.ok) {
 					console.log(response.status);
 					setApiError(true);

@@ -16,7 +16,7 @@ function OrdersList() {
 	const [customers, setCustomers] = useState({});
 	const [vehicles, setVehicles] = useState({});
 	const [employees, setEmployees] = useState({});
-	const { employee } = useAuth();
+	const { employee, isAdmin } = useAuth();
 	useEffect(() => {
 		let token = null;
 		if (employee) {
@@ -56,7 +56,7 @@ function OrdersList() {
 				// console.log("customer ids:", customerIds);
 				const responses = await Promise.all(
 					customerIds.map((customerId) =>
-						customerService.getCustomer(token,customerId)
+						customerService.getCustomer(token, customerId)
 					)
 				);
 				// console.log("responses from get customer:", responses);
@@ -192,7 +192,7 @@ function OrdersList() {
 									<th>Order Date</th>
 									<th>Received By</th>
 									<th>Order Status</th>
-									<th>View/Edit</th>
+									<th>Edit/View</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -236,10 +236,14 @@ function OrdersList() {
 										</td>
 										<td>
 											<div className="edit-delete-icons">
-												<Link to="#">
+												<Link
+													to={
+														isAdmin ? `/admin/order/${order.order_id}/edit` : ""
+													}
+												>
 													<FaEdit />
-												</Link>{" "}
-												|{" "}
+												</Link>
+												|
 												<Link to="#">
 													<FiExternalLink />
 												</Link>

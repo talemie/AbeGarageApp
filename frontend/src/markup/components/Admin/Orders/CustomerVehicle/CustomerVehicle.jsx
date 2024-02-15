@@ -122,7 +122,7 @@ function CustomerVehicle({ customer, vehicles }) {
 					setTimeout(() => {
 						// window.location.href = '/admin/employees';
 						navigate("/admin/orders");
-					}, 2000);
+					}, 1500);
 				}
 			})
 			// Handle Catch
@@ -345,6 +345,14 @@ function CustomerVehicle({ customer, vehicles }) {
 																	</button>
 																</div>
 															</div>
+															{success && (
+																<div
+																	style={{ color: "green" }}
+																	className="success-message"
+																>
+																	Order added successfully!
+																</div>
+															)}
 														</form>
 													</div>
 												</div>

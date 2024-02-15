@@ -33,7 +33,10 @@ import Orders from "./markup/pages/admin/Orders";
 import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
 import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
+
 import ServiceUpdate from "./markup/pages/admin/ServiceUpdate";
+
+import UpdateOrder from "./markup/pages/admin/UpdateOrder";
 
 function App() {
 	return (
@@ -127,6 +130,15 @@ function App() {
 					}
 				/>
 				<Route
+					path="/admin/order/:order_id/edit"
+					element={
+						<PrivateAuthRoute roles={[2, 3]}>
+							<UpdateOrder />
+						</PrivateAuthRoute>
+					}
+				/>
+				 <Route
+
 					path="/admin/service/edit/:id"
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>

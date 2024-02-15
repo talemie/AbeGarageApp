@@ -24,6 +24,7 @@ router.get(
 	[authMiddleware.verifyToken, authMiddleware.isAdmin],
 	employeeController.getSingleEmployee
 );
+
 // Updateroutes for employee
 router.put(
 	"/api/employee/:id",
