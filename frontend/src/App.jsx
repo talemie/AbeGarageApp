@@ -43,7 +43,7 @@ function App() {
 			<Header />
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
-				<Route path="/CustomerProfile" element={<CustomerProfile />}></Route>
+				<Route path="/admin/customer-profile" element={<CustomerProfile />}></Route>
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
