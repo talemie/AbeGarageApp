@@ -17,6 +17,7 @@ function OrdersList() {
 	const [vehicles, setVehicles] = useState({});
 	const [employees, setEmployees] = useState({});
 	const { employee, isAdmin } = useAuth();
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	useEffect(() => {
 		let token = null;
 		if (employee) {
@@ -167,6 +168,21 @@ function OrdersList() {
 		fetchOrders();
 	}, []);
 
+	// handling responsiveness
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener("resize", handleResize);
+		handleResize(); // Initial check
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
+
 	return (
 		<>
 			{apiError ? (
@@ -183,88 +199,139 @@ function OrdersList() {
 						<div className="contact-title">
 							<h2>Orders</h2>
 						</div>
-						<Table striped bordered hover>
-							<thead>
-								<tr>
-									<th>Order Id</th>
-									<th>Customer</th>
-									<th>Vehicle</th>
-									<th>Order Date</th>
-									<th>Received By</th>
-									<th>Order Status</th>
-									<th>Active Order</th>
-									<th>Edit/View</th>
-								</tr>
-							</thead>
-							<tbody>
-								{orders.map((order) => (
-									<tr key={order.order_id}>
-										<td className="order-text1">{order.order_id}</td>
-										<td>
-											<span className="order-text1">
-												{customers[order.customer_id]?.name}
-											</span>
-											<br />
-											{customers[order.customer_id]?.email} <br />
-											{customers[order.customer_id]?.phone}
-										</td>
-										<td>
-											<span className="order-text1">
-												{vehicles[order.vehicle_id]?.vehicleName}
-											</span>
-											<br />
-											{vehicles[order.vehicle_id]?.year} <br />
-											{vehicles[order.vehicle_id]?.vehicleTag}
-										</td>
-										<td>
-											{format(new Date(order.order_date), "MM / dd / yyyy ")}
-										</td>
-										<td>
-											<span className="order-text1">
-												{employees[order.employee_id]?.employeeName}
-											</span>
-										</td>
-										<td>
-											<span
-												className={
-													order.order_status === 0
-														? "order-status-inprogress"
-														: "order-status-done"
-												}
-											>
-												{order.order_status === 0 ? "In Progress" : "Completed"}
-											</span>
-										</td>
-										<td>
-											<span
-												className={
-													order.active_order === 0
-														? "order-status-inprogress"
-														: "order-status-done"
-												}
-											>
-												{order.active_order === 0 ? "No " : "Yes"}
-											</span>
-										</td>
-										<td>
-											<div className="edit-delete-icons">
-												<Link
-													to={
-														isAdmin ? `/admin/order/${order.order_id}/edit` : ""
+						{isMobile ? (
+							<Table striped bordered hover>
+								<thead>
+									<tr>
+										<th>Order Id</th>
+										<th>Customer</th>
+																			
+										<th>Order Status</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									{orders.map((order) => (
+										<tr key={order.order_id}>
+											<td className="order-text1">{order.order_id}</td>
+											<td>
+												<span className="order-text1">
+													{customers[order.customer_id]?.name}
+												</span>
+												<br />
+												{customers[order.customer_id]?.email} <br />
+												{customers[order.customer_id]?.phone}
+											</td>
+											
+											
+											
+											<td>
+												<span
+													className={
+														order.order_status === 0
+															? "order-status-inprogress"
+															: "order-status-done"
 													}
 												>
-													<FaEdit />
-												</Link>
-												|
-												<Link to="#">
-													<FiExternalLink />
-												</Link>
-											</div>
-										</td>
+													{order.order_status === 0
+														? "In Progress"
+														: "Completed"}
+												</span>
+											</td>
+											
+											
+										</tr>
+									))}
+								</tbody>
+							</Table>
+						) : (
+							<Table striped bordered hover>
+								<thead>
+									<tr>
+										<th>Order Id</th>
+										<th>Customer</th>
+										<th>Vehicle</th>
+										<th>Order Date</th>
+										<th>Received By</th>
+										<th>Order Status</th>
+										<th>Active Order</th>
+										<th>Edit/View</th>
 									</tr>
-								))}
-							</tbody>
-						</Table>
+								</thead>
+								<tbody>
+									{orders.map((order) => (
+										<tr key={order.order_id}>
+											<td className="order-text1">{order.order_id}</td>
+											<td>
+												<span className="order-text1">
+													{customers[order.customer_id]?.name}
+												</span>
+												<br />
+												{customers[order.customer_id]?.email} <br />
+												{customers[order.customer_id]?.phone}
+											</td>
+											<td>
+												<span className="order-text1">
+													{vehicles[order.vehicle_id]?.vehicleName}
+												</span>
+												<br />
+												{vehicles[order.vehicle_id]?.year} <br />
+												{vehicles[order.vehicle_id]?.vehicleTag}
+											</td>
+											<td>
+												{format(new Date(order.order_date), "MM / dd / yyyy ")}
+											</td>
+											<td>
+												<span className="order-text1">
+													{employees[order.employee_id]?.employeeName}
+												</span>
+											</td>
+											<td>
+												<span
+													className={
+														order.order_status === 0
+															? "order-status-inprogress"
+															: "order-status-done"
+													}
+												>
+													{order.order_status === 0
+														? "In Progress"
+														: "Completed"}
+												</span>
+											</td>
+											<td>
+												<span
+													className={
+														order.active_order === 0
+															? "order-status-inprogress"
+															: "order-status-done"
+													}
+												>
+													{order.active_order === 0 ? "No " : "Yes"}
+												</span>
+											</td>
+											<td>
+												<div className="edit-delete-icons">
+													<Link
+														to={
+															isAdmin
+																? `/admin/order/${order.order_id}/edit`
+																: ""
+														}
+													>
+														<FaEdit />
+													</Link>
+													|
+													<Link to="#">
+														<FiExternalLink />
+													</Link>
+												</div>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</Table>
+						)}
 					</div>
 				</section>
 			)}
