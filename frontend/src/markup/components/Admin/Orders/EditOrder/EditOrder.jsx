@@ -165,11 +165,7 @@ function EditOrder() {
 		}
 		// console.log('new updated order:',orderData);
 		//  the logic to update the order using the updatedOrder state
-		const updatOrder = orderService.updateOrder(
-			loggedInEmployeeToken,
-			order_id,
-			orderData
-		);
+		const updatOrder = orderService.updateOrder(token, order_id, orderData);
 
 		updatOrder
 			.then((response) => response.json())
