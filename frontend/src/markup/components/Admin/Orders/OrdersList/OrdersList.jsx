@@ -192,6 +192,7 @@ function OrdersList() {
 									<th>Order Date</th>
 									<th>Received By</th>
 									<th>Order Status</th>
+									<th>Active Order</th>
 									<th>Edit/View</th>
 								</tr>
 							</thead>
@@ -232,6 +233,17 @@ function OrdersList() {
 												}
 											>
 												{order.order_status === 0 ? "In Progress" : "Completed"}
+											</span>
+										</td>
+										<td>
+											<span
+												className={
+													order.active_order === 0
+														? "order-status-inprogress"
+														: "order-status-done"
+												}
+											>
+												{order.active_order === 0 ? "No " : "Yes"}
 											</span>
 										</td>
 										<td>
