@@ -176,7 +176,7 @@ function OrdersList() {
 		};
 
 		window.addEventListener("resize", handleResize);
-		handleResize(); // Initial check
+		// handleResize(); 
 
 		return () => {
 			window.removeEventListener("resize", handleResize);
@@ -204,8 +204,7 @@ function OrdersList() {
 								<thead>
 									<tr>
 										<th>Order Id</th>
-										<th>Customer</th>
-																			
+										<th>Customer</th>																			
 										<th>Order Status</th>
 										
 									</tr>
