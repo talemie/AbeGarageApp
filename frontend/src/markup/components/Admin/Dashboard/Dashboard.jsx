@@ -85,7 +85,7 @@ function Dashboard() {
 								<div className="col-lg-4 service-block-one">
 									<div className="inner-box hvr-float-shadow">
 										<h5>SERVICE AND REPAIRS</h5>
-										<h2>Engine Servivice & Repair</h2>
+										<h2>Engine Servivice</h2>
 
 										<a href="/admin/services" className="read-more">
 											read more +
@@ -114,7 +114,7 @@ function Dashboard() {
 								<div className="col-lg-4 service-block-one">
 									<div className="inner-box hvr-float-shadow">
 										<h5>SERVICE AND REPAIRS</h5>
-										<h2>Denting & Painting</h2>
+										<h2>Denting</h2>
 
 										<a href="/admin/services" className="read-more">
 											read more +

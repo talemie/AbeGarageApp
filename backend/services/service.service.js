@@ -35,7 +35,9 @@ async function addNewService(serviceName, serviceDescription) {
 async function getAllServices() {
 	try {
 		// Execute the SQL query to fetch all services from the common_services table
-		const rows = await conn.query("SELECT * FROM common_services");
+		const rows = await conn.query(
+			"SELECT * FROM common_services ORDER BY service_id DESC LIMIT 10"
+		);
 
 		// Return the retrieved rows
 		return rows;

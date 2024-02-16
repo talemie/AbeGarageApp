@@ -50,7 +50,7 @@ const getCustomer = async (token, customer_id) => {
 			`${api_url}/api/customer/${customer_id}`,
 			requestOptions
 		);
-		console.log("customer: response==", response);
+		// console.log("customer: response==", response);
 		return response;
 	} catch (error) {
 		console.error("Error fetching employee:", error);
