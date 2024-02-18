@@ -98,7 +98,18 @@ async function getOrderById(req, res, next) {
 // Create the get single order controller
 async function getOrdersByCustomerId(req, res, next) {
 	const { customer_id } = req.params; // getting the order_id from the url parameter
+
 	try {
+		// check if customer exists first
+		const customer = await orderService.checkIfCustomerExists(
+			customer_id
+		);
+		if (!customer) {
+			res.status(400).json({
+				error: "Customer not Found!",
+			});
+			return;
+		}
 		// calling the getOrderByID method in the Order service and passing the order_id as a param
 		const order = await orderService.getOrdersByCustomerId(customer_id);
 		if (order.length == 0) {
