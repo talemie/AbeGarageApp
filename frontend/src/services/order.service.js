@@ -35,6 +35,29 @@ const singleOrder = async (token,order_id) => {
 	
 };
 
+// A function to send get request to get orders by customer_id
+const getOrdersByCustomerId = async (token, customer_id) => {
+	// console.log(token);
+	try {
+		const requestOptions = {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"x-access-token": token,
+			},
+		};
+
+		const response = await fetch(
+			`${api_url}/api/customer-orders/${customer_id}`,
+			requestOptions
+		);
+
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 // A function to send get request to add an order
 const addOrder = async (formData) => {
 	const requestOptions = {
@@ -67,6 +90,7 @@ const orderService = {
 	addOrder,
 	singleOrder,
 	updateOrder,
+	getOrdersByCustomerId,
 };
 // export this module
 export default orderService;
