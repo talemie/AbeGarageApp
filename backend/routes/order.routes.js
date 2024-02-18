@@ -16,6 +16,10 @@ router.get("/api/orders", orderController.getAllOrders);
 router.get("/api/order/:order_id",[authMiddleware.verifyToken, authMiddleware.isAdmin], orderController.getOrderById);
 // Create a route to handle the order update request on put
 router.put("/api/order/:order_id",[authMiddleware.verifyToken, authMiddleware.isManager], orderController.updateOrder);
+// create aroute to get order by hash 
+router.get("/api/orderStatus/:hash", orderController.getOrderByOrderHash);
+
+
 
 // Export the router
 module.exports = router;

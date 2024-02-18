@@ -14,6 +14,77 @@ async function checkIfCustomerExists(customer_id) {
 	return false;
 }
 
+// async function createOrder(req, res, next) {
+// 	try {
+// 		// console.log(req.body);
+// 		const orderData = req.body;
+// 		// check if customer exists in the database first
+// 		const customer = await orderService.checkIfCustomerExists(
+// 			orderData.customer_id
+// 		);
+// 		if (!customer) {
+// 			res.status(400).json({
+// 				error: "Customer not registered!",
+// 			});
+// 			return;
+// 		}
+// 		// check if the selected vehicle exists in the database first
+// 		const vehicle = await vehicleService.getSingleVehicleById(
+// 			orderData.vehicle_id
+// 		);
+
+// 		if (!vehicle) {
+// 			res.status(400).json({
+// 				error: "This Vehicle is not registered!",
+// 			});
+// 			return;
+// 		}
+
+// 		// call the createOrder method from the order service
+// 		const order = await orderService.createOrder(orderData);
+// 		const orderStatusURL = http://localhost:5173/api/order_status/${order.order_hash};
+// 		const transporter = nodemailer.createTransport({
+// 			service: "gmail",
+// 			auth: {
+// 				user: "etenesh4good@gmail.com",
+// 				pass: "123456",
+// 			},
+// 		});
+// 		if (order) {
+// 			// Send email notification
+// 			const mailOptions = {
+// 				from: "etenesh4good@gmail.com",
+// 				to:"test@gmail.com", // Assuming customer has an email property
+// 				subject: "Order Confirmation",
+// 				text: Your order has been successfully placed! n/n Please follow this link to view your Order Status:\n  ${orderStatusURL},
+// 			};
+
+// 			transporter.sendMail(mailOptions, (error, info) => {
+// 				if (error) {
+// 					console.error("Error sending email:", error);
+// 				} else {
+// 					console.log("Email sent:", info.response);
+// 				}
+// 			});
+
+// 			res.status(200).json({
+// 				status: "true",
+// 				msg: "Order added successfully!",
+// 			});
+// 		} else {
+// 			res.status(400).json({
+// 				error: "Failed to add the order!",
+// 			});
+// 		}
+// 	} catch (err) {
+// 		console.log(err);
+// 		res.status(400).json({
+// 			error: "Something went wrong!",
+// 		});
+// 	}
+// }
+
+
 // A function to add a new order
 async function createOrder(order) {
 	let createdOrder = "";
@@ -318,12 +389,68 @@ async function updateOrder(order_id, order) {
 		return false;
 	}
 }
+async function getOrderByHash(order_hash) {
+  try {
+    // get all orders query
+    const query = `SELECT
+  o.order_id,
+  o.employee_id,
+  o.customer_id,
+  o.vehicle_id,
+  o.order_date,
+  o.active_order,
+  o.order_hash,
+  oi.order_info_id,
+  oi.order_total_price,
+  oi.estimated_completion_date,
+  oi.completion_date,
+  oi.additional_request,
+  oi.notes_for_internal_use,
+  oi.notes_for_customer,
+  oi.additional_requests_completed,
+  os.order_services,
+  ost.order_status_id,
+  ost.order_status
+FROM
+  orders o
+JOIN
+  order_info oi ON o.order_id = oi.order_id
+LEFT JOIN
+  (
+    SELECT
+      order_id,
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'order_service_id', order_service_id,
+          'service_id', service_id,
+          'service_completed', service_completed
+        )
+      ) AS order_services
+    FROM
+      order_services
+    GROUP BY
+      order_id
+  ) os ON o.order_id = os.order_id
+LEFT JOIN
+  order_status ost ON o.order_id = ost.order_id
+WHERE
+  o.order_hash = ?;
+
+`;
+    const rows = await conn.query(query, [order_hash]);
+    return rows[0];
+  } catch (error) {
+    console.log(error.message);
+    return false;
+  }
+}
 
 // Export the functions for use in the controller
 module.exports = {
-	createOrder,
-	checkIfCustomerExists,
-	getAllOrders,
-	getOrderById,
-	updateOrder,
+  createOrder,
+  checkIfCustomerExists,
+  getAllOrders,
+  getOrderById,
+  updateOrder,
+  getOrderByHash
 };

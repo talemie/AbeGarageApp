@@ -34,106 +34,118 @@ import NewOrder from "./markup/pages/admin/NewOrder";
 import Four04 from "./markup/pages/Four04";
 import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
 import UpdateOrder from "./markup/pages/admin/UpdateOrder";
+import OrdersDetail from "./markup/components/OrdersDetail/OrdersDetail";
+import OrderDetail from "./markup/components/OrdersDetail/OrdersDetail";
 
 function App() {
-	return (
-		<>
-			<Header />
-			<Routes>
-				<Route path="/" element={<Home />}></Route>
-				<Route path="/services" element={<ServicesPublic />} />
-				<Route path="/login" element={<Login />}></Route>
-				<Route path="/admin/services" element={<ServicesManage />} />
-				<Route path="/unauthorized" element={<Unauthorized />}></Route>
+  const orderId = '1';
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<ServicesPublic />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin/services" element={<ServicesManage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+		<Route path="/order/:order_hash" element={<OrderDetail />} /> 
 
-				<Route
-					path="/admin/employee/edit/:id"
-					element={<EmployeeEdit />}
-				></Route>
 
-				<Route path="/about" element={<About />}></Route>
-				<Route path="/contact" element={<Contact />}></Route>
-				<Route path="/*" element={<Four04 />}></Route>
-				<Route
-					path="/managerlanding"
-					element={
-						<PrivateAuthRoute roles={[2]}>
-							<ManagerLanding />
-						</PrivateAuthRoute>
-					}
-				></Route>
-				<Route
-					path="/admin/dashboard"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<AdminDashboard />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/add-customer"
-					element={
-						<PrivateAuthRoute roles={[2, 3]}>
-							<AddCustomers />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/customers"
-					element={
-						<PrivateAuthRoute roles={[2, 3]}>
-							<Customers />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/customer/edit/:id"
-					element={
-						<PrivateAuthRoute roles={[2, 3]}>
-							<CustomerEditPage />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/employees"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<Employees />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/add-employee"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<AddEmployee />
-						</PrivateAuthRoute>
-					}
-				></Route>
-				<Route
-					path="/admin/orders"
-					element={
-						<PrivateAuthRoute roles={[1, 2, 3]}>
-							<Orders />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/order"
-					element={
-						<PrivateAuthRoute roles={[2, 3]}>
-							<NewOrder />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route
-					path="/admin/order/:order_id/edit"
-					element={
-						<PrivateAuthRoute roles={[2, 3]}>
-							<UpdateOrder />
-						</PrivateAuthRoute>
-					}
-				/>
+        <Route
+          path="/admin/employee/edit/:id"
+          element={<EmployeeEdit />}
+        />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/*" element={<Four04 />} />
+        <Route
+          path="/managerlanding"
+          element={
+            <PrivateAuthRoute roles={[2]}>
+              <ManagerLanding />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AdminDashboard />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/add-customer"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <AddCustomers />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/customers"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <Customers />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/customer/edit/:id"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <CustomerEditPage />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/employees"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <Employees />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/add-employee"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AddEmployee />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <Orders />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/order"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <NewOrder />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/order/:order_id"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <OrdersDetail orderId={orderId} />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/order/:order_id/edit"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <UpdateOrder />
+            </PrivateAuthRoute>
+          }
+        />
 				{/* <Route
 					path="/admin/service/edit/:id"
 					element={

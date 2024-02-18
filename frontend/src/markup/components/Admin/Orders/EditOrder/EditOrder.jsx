@@ -95,6 +95,7 @@ function EditOrder() {
 			const customerId = order.customer_id;
 			const response = await customerService.getCustomer(token,customerId);
 			const customer = await response.json();
+			console.log(customer)
 
 			setCustomer(customer);
 		} catch (error) {
@@ -165,11 +166,7 @@ function EditOrder() {
 		}
 		// console.log('new updated order:',orderData);
 		//  the logic to update the order using the updatedOrder state
-		const updatOrder = orderService.updateOrder(
-			loggedInEmployeeToken,
-			order_id,
-			orderData
-		);
+		const updatOrder = orderService.updateOrder(token, order_id, orderData);
 
 		updatOrder
 			.then((response) => response.json())
@@ -272,7 +269,7 @@ function EditOrder() {
 			{/* SERVICES */}
 			<div className="wrapper-box selected-customer ">
 				<div className="left-column ">
-					<h6 className="order-text1">Choose service</h6>
+					<h6 className="order-text1">Ordered Services</h6>
 					{requestedServices?.map((service, i) => (
 						<div className=" mt-2 px-3 service-item checkbox-holder" key={i}>
 							<h5 className="order-text2">{service.service_name}</h5>

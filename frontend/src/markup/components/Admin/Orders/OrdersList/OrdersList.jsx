@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
-import orderService from "../../../../../services/order.service";
+import  orderService  from "../../../../../services/order.service"; // Modify import statement
 import customerService from "../../../../../services/customer.service";
 import { useAuth } from "../../../../../Contexts/AuthContext";
 import vehicleService from "../../../../../services/vehicle.service";
@@ -9,6 +9,9 @@ import employeeService from "../../../../../services/employee.service";
 import { FaEdit } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { Link } from "react-router-dom";
+
+
+
 function OrdersList() {
 	const [orders, setOrders] = useState([]);
 	const [apiError, setApiError] = useState(false);
@@ -244,9 +247,11 @@ function OrdersList() {
 													<FaEdit />
 												</Link>
 												|
-												<Link to="#">
+												<Link to={`/order/${order.order_hash}
+													`}>
 													<FiExternalLink />
 												</Link>
+												
 											</div>
 										</td>
 									</tr>
