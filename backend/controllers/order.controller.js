@@ -95,6 +95,27 @@ async function getOrderById(req, res, next) {
 	}
 }
 
+// Create the get single order controller
+async function getOrdersByCustomerId(req, res, next) {
+	const { customer_id } = req.params; // getting the order_id from the url parameter
+	try {
+		// calling the getOrderByID method in the Order service and passing the order_id as a param
+		const order = await orderService.getOrdersByCustomerId(customer_id);
+		if (order.length == 0) {
+			return res.status(404).json({
+				message: "This Order does not exist.",
+			});
+		} else {
+			return res.status(200).json(order);
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({
+			error: "Something went wrong!",
+		});
+	}
+}
+
 // Create the update order controller
 async function updateOrder(req, res, next) {
 	let updatedOrder = req.body; // Getting the new data for the order from the request body
@@ -128,4 +149,10 @@ async function updateOrder(req, res, next) {
 }
 
 // export functions
-module.exports = { createOrder, getAllOrders, getOrderById, updateOrder };
+module.exports = {
+	createOrder,
+	getAllOrders,
+	getOrderById,
+	updateOrder,
+	getOrdersByCustomerId,
+};

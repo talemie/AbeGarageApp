@@ -236,6 +236,63 @@ WHERE
 	}
 }
 
+// async function to getOrdersByCustomerId
+async function getOrdersByCustomerId(customer_id) {
+	try {
+		// get all orders query
+		const query = `SELECT
+  o.order_id,
+  o.employee_id,
+  o.customer_id,
+  o.vehicle_id,
+  o.order_date,
+  o.active_order,
+  o.order_hash,
+  oi.order_info_id,
+  oi.order_total_price,
+  oi.estimated_completion_date,
+  oi.completion_date,
+  oi.additional_request,
+  oi.notes_for_internal_use,
+  oi.notes_for_customer,
+  oi.additional_requests_completed,
+  os.order_services,
+  ost.order_status_id,
+  ost.order_status
+FROM
+  orders o
+JOIN
+  order_info oi ON o.order_id = oi.order_id
+LEFT JOIN
+  (
+    SELECT
+      order_id,
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'order_service_id', order_service_id,
+          'service_id', service_id,
+          'service_completed', service_completed
+        )
+      ) AS order_services
+    FROM
+      order_services
+    GROUP BY
+      order_id
+  ) os ON o.order_id = os.order_id
+LEFT JOIN
+  order_status ost ON o.order_id = ost.order_id
+WHERE
+  o.customer_id = ?;
+
+`;
+		const rows = await conn.query(query, [customer_id]);
+		return rows;
+	} catch (error) {
+		console.log(error.message);
+		return false;
+	}
+}
+
 // async function to updateOrder
 async function updateOrder(order_id, order) {
 	try {
@@ -326,4 +383,5 @@ module.exports = {
 	getAllOrders,
 	getOrderById,
 	updateOrder,
+	getOrdersByCustomerId,
 };
