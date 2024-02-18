@@ -114,7 +114,7 @@ async function getOrdersByCustomerId(req, res, next) {
 		const order = await orderService.getOrdersByCustomerId(customer_id);
 		if (order.length == 0) {
 			return res.status(404).json({
-				message: "This Order does not exist.",
+				message: "No Orders for this customer.",
 			});
 		} else {
 			return res.status(200).json(order);
