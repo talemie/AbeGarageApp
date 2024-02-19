@@ -9,8 +9,9 @@ async function createService(service) {
 	};
 
 	try {
-		const response = await fetch(`${api_url}/api/services`, request);
-		return await response.json();
+		const response = await fetch(`${api_url}/api/service`, request);
+
+		return response;
 	} catch (error) {
 		console.error("Error creating service:", error);
 		throw error;
@@ -46,8 +47,6 @@ async function getSingleService(id) {
 		console.error("Error fetching single service:", error);
 		throw error;
 	}
-
-
 }
 
 async function updateService(service_Id, updatedService) {
