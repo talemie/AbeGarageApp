@@ -204,9 +204,9 @@ function OrdersList() {
 								<thead>
 									<tr>
 										<th>Order Id</th>
-										<th>Customer</th>																			
+										<th>Customer</th>
 										<th>Order Status</th>
-										
+										<th>Edit/View</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -214,16 +214,14 @@ function OrdersList() {
 										<tr key={order.order_id}>
 											<td className="order-text1">{order.order_id}</td>
 											<td>
-												<span className="order-text1">
+												<span className="order-text1 pr-2">
 													{customers[order.customer_id]?.name}
 												</span>
 												<br />
 												{customers[order.customer_id]?.email} <br />
-												{customers[order.customer_id]?.phone}
+												{/* {customers[order.customer_id]?.phone} */}
 											</td>
-											
-											
-											
+
 											<td>
 												<span
 													className={
@@ -237,8 +235,23 @@ function OrdersList() {
 														: "Completed"}
 												</span>
 											</td>
-											
-											
+											<td>
+												<div className="edit-delete-icons">
+													<Link
+														to={
+															isAdmin
+																? `/admin/order/${order.order_id}/edit`
+																: ""
+														}
+													>
+														<FaEdit />
+													</Link>
+													|
+													<Link to="#">
+														<FiExternalLink />
+													</Link>
+												</div>
+											</td>
 										</tr>
 									))}
 								</tbody>
