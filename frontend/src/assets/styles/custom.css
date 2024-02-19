@@ -225,9 +225,9 @@ input:disabled {
 .selected-customer .sec-title {
 	margin-bottom: 25px;
 }
-.selected-customer .form-close {
+/* .selected-customer .form-close {
 	float: right;
-}
+} */
 .selected-customer .text span {
 	color: #000821;
 }

@@ -1,44 +1,49 @@
 import React from "react";
+// Import the auth hook
+import { useAuth } from "../../../Contexts/AuthContext";
+// Import the login form component
+import LoginForm from "../../components/LoginForm/LoginForm";
+// Import the admin menu component
 import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
-import AddVehicleForm from "../../components/Admin/AddVehicleForm/AddVehicleForm";
-function customerProfile() {
-  return (
-    <div classNameName="container-fluid admin-pages">
-      <div classNameName="row">
-        <div classNameName="col-md-3 admin-left-side">
-          <AdminMenu />
-        </div>
+// Import the OrdersList component
+import CostomerProfileForm from "../../components/Admin/CostomerProfile/CostomerProfileForm";
+function CustomerProfile() {
+	// Destructure the auth hook
+	const { isLogged, isAdmin, isManager } = useAuth();
 
-        <div className="auto-container col-md-9 admin-right-side">
-          <div className="history-block">
-            <div className="years">Info</div>
-            <div className="content">Customer :Adugna Bekele</div>
-            <div>Email:</div>
-            <div>Phone Number:</div>
-            <div>Active Customer</div>
-            <div>Edit Customer info:</div>
-          </div>
+	if (isLogged) {
+		// console.log("Kebede");
 
-          <div>
-            <div className="history-block">
-              <div className="years">Cars</div>
-              <div className="content">Vehicle of Adugna </div>
-              <div>Vehicle</div>
-            </div>
-          </div>
-          <div classNameName="form-group col-md-12">
-            <AddVehicleForm />
-          </div>
-
-          <div className="history-block">
-            <div className="years">Orders</div>
-            <div className="content">Orders of Adugna </div>
-            <div>orders</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+		if (isAdmin || isManager) {
+			return (
+				<div>
+					<div className="container-fluid admin-pages">
+						<div className="row">
+							<div className="col-md-3 admin-left-side">
+								<AdminMenu />
+							</div>
+							<div className="col-md-9 admin-right-side">
+								<CostomerProfileForm />
+							</div>
+						</div>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div className="mt-5 ml-5">
+					<h1>You are not authorized to access this page</h1>
+				</div>
+			);
+		}
+	} else {
+		return (
+			<div>
+				<LoginForm />
+			</div>
+		);
+	}
 }
 
-export default customerProfile;
+export default CustomerProfile;
+

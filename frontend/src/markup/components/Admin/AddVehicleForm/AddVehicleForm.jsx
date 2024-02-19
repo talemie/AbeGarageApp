@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import vehicleService from "../../../../services/vehicle.service";
 import { useParams } from "react-router-dom";
 
-function AddVehicleForm() {
+function AddVehicleForm({ toggle }) {
 	const [vehicle_year, setVehicleYear] = useState("");
 	const [vehicle_make, setVehicleMake] = useState("");
 	const [vehicle_model, setVehicleModel] = useState("");
@@ -68,12 +68,13 @@ function AddVehicleForm() {
 					// Handle successful response
 					setSuccess("vehicle added successfully");
 					setServerError("");
+
 					// Redirect to the add vehicle  page after 2 seconds
 					//  just redirect to the customer detail page
-					// setTimeout(() => {
-					// 	// window.location.href = '/admin/employees';
-					// 	window.location.href = `/admin/customer/${customer_id}`;
-					// }, 2000);
+					setTimeout(() => {
+						// window.location.href = '/admin/employees';
+						toggle();
+					}, 2000);
 				}
 			})
 			// Handle Catch
@@ -94,12 +95,12 @@ function AddVehicleForm() {
 					<h3>Add a new vehicle</h3>
 				</div>
 				<div className="row clearfix">
-					<div className="form-column col-lg-7">
+					<div className="form-column col-lg-10">
 						<div className="inner-column">
 							<div className="contact-form">
 								<form onSubmit={handleSubmit}>
 									<div className="row clearfix">
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											{serverError && (
 												<div className="validation-error" role="alert">
 													{serverError}
@@ -114,7 +115,7 @@ function AddVehicleForm() {
 												required
 											/>
 										</div>
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_make"
@@ -125,7 +126,7 @@ function AddVehicleForm() {
 											/>
 										</div>
 
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_model"
@@ -138,7 +139,7 @@ function AddVehicleForm() {
 											/>
 										</div>
 
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_type"
@@ -149,7 +150,7 @@ function AddVehicleForm() {
 											/>
 										</div>
 
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_mileage"
@@ -166,7 +167,7 @@ function AddVehicleForm() {
 												</div>
 											)} */}
 										</div>
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_tag"
@@ -176,7 +177,7 @@ function AddVehicleForm() {
 												required
 											/>
 										</div>
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_serial"
@@ -188,7 +189,7 @@ function AddVehicleForm() {
 												required
 											/>
 										</div>
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<input
 												type="text"
 												name="vehicle_color"
@@ -210,7 +211,7 @@ function AddVehicleForm() {
 											)}
 										</div>
 
-										<div className="form-group col-md-8">
+										<div className="form-group col-md-12">
 											<button
 												className="theme-btn btn-style-one"
 												type="submit"
