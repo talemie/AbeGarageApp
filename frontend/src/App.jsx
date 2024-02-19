@@ -43,7 +43,10 @@ function App() {
 			<Header />
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
-				<Route path="/admin/customer-profile" element={<CustomerProfile />}></Route>
+				<Route
+					path="/admin/customer-profile/:customer_id"
+					element={<CustomerProfile />}
+				></Route>
 				<Route path="/services" element={<ServicesPublic />} />
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/admin/services" element={<ServicesManage />} />
@@ -137,7 +140,7 @@ function App() {
 						</PrivateAuthRoute>
 					}
 				/>
-				 <Route
+				<Route
 					path="/admin/service/edit/:id"
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>
@@ -147,7 +150,6 @@ function App() {
 				/>
 			</Routes>
 			<Footer />
-			
 		</>
 	);
 } 

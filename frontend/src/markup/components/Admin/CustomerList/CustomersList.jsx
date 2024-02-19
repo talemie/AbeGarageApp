@@ -306,7 +306,9 @@ if (employee) {
 																<FaEdit />
 															</Link>{" "}
 															|{" "}
-															<Link to="/admin/customer/{customerId}">
+															<Link
+																to={`/admin/customer-profile/${customer.customer_id}`}
+															>
 																<FiExternalLink />
 															</Link>
 														</div>

@@ -78,13 +78,14 @@ function AddNewCustomer(props) {
 		newCustomer
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				// console.log(data.customer.customer_id);
+				const customer_id = data.customer.customer_id;
 				if (data.status) {
 					setSuccess(true);
 					setServerError("");
 					setTimeout(() => {
-						navigate("/admin/customers");
-					}, 1500);
+						navigate(`/admin/customer-profile/${customer_id}`);
+					}, 2000);
 				} else {
 					setServerError("Failed to create a new customer");
 				}
