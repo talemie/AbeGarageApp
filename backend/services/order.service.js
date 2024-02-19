@@ -30,7 +30,6 @@ async function createOrder(order) {
 		// order body validation
 		if (!order.employee_id || !order.customer_id || !order.vehicle_id) {
 			throw new Error("Missing data in request body!");
-			
 		}
 		// query for Inserting the employee_id,customer_id, vehicle_id, active_order and order_hash in to the orders table
 		const query = `INSERT INTO orders (employee_id,customer_id, vehicle_id, active_order,order_hash)  VALUES (?,?,?,?,?)`;
@@ -98,11 +97,7 @@ async function createOrder(order) {
 
 		for (let i = 0; i < order.order_services.length; i++) {
 			const service = order.order_services[i];
-			const rows3 = await conn.query(query3, [
-				order_id,
-				service.service_id,
-				0,
-			]);
+			const rows3 = await conn.query(query3, [order_id, service.service_id, 0]);
 			// console.log("rows3 result:", rows3);
 			if (rows3.affectedRows !== 1) {
 				return false;
@@ -376,6 +371,62 @@ async function updateOrder(order_id, order) {
 	}
 }
 
+async function getOrderByHash(order_hash) {
+	try {
+		// get all orders query
+		const query = `SELECT
+  o.order_id,
+  o.employee_id,
+  o.customer_id,
+  o.vehicle_id,
+  o.order_date,
+  o.active_order,
+  o.order_hash,
+  oi.order_info_id,
+  oi.order_total_price,
+  oi.estimated_completion_date,
+  oi.completion_date,
+  oi.additional_request,
+  oi.notes_for_internal_use,
+  oi.notes_for_customer,
+  oi.additional_requests_completed,
+  os.order_services,
+  ost.order_status_id,
+  ost.order_status
+FROM
+  orders o
+JOIN
+  order_info oi ON o.order_id = oi.order_id
+LEFT JOIN
+  (
+    SELECT
+      order_id,
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'order_service_id', order_service_id,
+          'service_id', service_id,
+          'service_completed', service_completed
+        )
+      ) AS order_services
+    FROM
+      order_services
+    GROUP BY
+      order_id
+  ) os ON o.order_id = os.order_id
+LEFT JOIN
+  order_status ost ON o.order_id = ost.order_id
+WHERE
+  o.order_hash = ?;
+
+`;
+		const rows = await conn.query(query, [order_hash]);
+		return rows[0];
+	} catch (error) {
+		console.log(error.message);
+		return false;
+	}
+}
+
 // Export the functions for use in the controller
 module.exports = {
 	createOrder,
@@ -384,4 +435,5 @@ module.exports = {
 	getOrderById,
 	updateOrder,
 	getOrdersByCustomerId,
+	getOrderByHash,
 };

@@ -2,6 +2,10 @@
 const orderService = require("../services/order.service");
 // import the vehicle service to check if the vehicle is exist or not before adding the order
 const vehicleService = require("../services/vehicle.service");
+// import customerServices 
+const customerService = require("../services/customer.service.js");
+// import Service services 
+const serviceService = require("../services/service.service.js");
 
 // Create the create order controller
 async function createOrder(req, res, next) {
@@ -159,6 +163,66 @@ async function updateOrder(req, res, next) {
 	}
 }
 
+// create a function to get order by order_hash
+async function getOrderByOrderHash(req, res, next) {
+	try {
+		const orderHash = req.params.hash;
+		// console.log(orderHash);
+		const order = await orderService.getOrderByHash(orderHash);
+		console.log(order);
+		if (!order) {
+			res.status(400).json({
+				error: "Failed to get order!",
+			});
+		} else {
+			const customer = await customerService.getCustomerById(order.customer_id);
+			const vehicle = await vehicleService.getSingleVehicleById(
+				order.vehicle_id
+			);
+
+			const fetchServices = async (order) => {
+				console.log("order is:", order);
+
+				try {
+					const serviceIds = order.order_services.map(
+						(service) => service.service_id
+					);
+					// console.log("serviceIds:", serviceIds);
+					const responses = await Promise.all(
+						serviceIds.map((serviceId) =>
+							serviceService.getServiceById(serviceId)
+						)
+					);
+					console.log("responses from get service:", responses);
+				
+					const servicesMap = responses.map((service) => {
+						return {
+							service_id: service.service_id,
+							service_name: service.service_name,
+							service_description: service.service_description,
+							service_completed: order.order_services.filter(
+								(item) => service.service_id == item.service_id
+							)[0].service_completed,
+						};
+					});
+					// console.log("service maps:", servicesMap);
+					return servicesMap;
+				} catch (error) {
+					console.log(error);
+				}
+			};
+			const service = await fetchServices(order);
+
+			return res.status(200).json({ order, customer, vehicle, service });
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({
+			error: "Something went wrong!",
+		});
+	}
+}
+
 // export functions
 module.exports = {
 	createOrder,
@@ -166,4 +230,5 @@ module.exports = {
 	getOrderById,
 	updateOrder,
 	getOrdersByCustomerId,
+	getOrderByOrderHash,
 };
