@@ -268,7 +268,7 @@ function EditOrder() {
 			{/* SERVICES */}
 			<div className="wrapper-box selected-customer ">
 				<div className="left-column ">
-					<h6 className="order-text1">Ordered Services</h6>
+					<h6 className="order-text1">Requested Services</h6>
 					{requestedServices?.map((service, i) => (
 						<div className=" mt-2 px-3 service-item checkbox-holder" key={i}>
 							<h5 className="order-text2">{service.service_name}</h5>
