@@ -85,12 +85,34 @@ const updateOrder = async (token, id, orderData) => {
 	const response = await fetch(`${api_url}/api/order/${id}`, requestOptions);
 	return response;
 };
+
+// A function to send get request to get single order by order_hash
+const getOrderHash = async (order_hash) => {
+	// console.log(token);
+	try {
+		const requestOptions = {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			
+		},
+		};
+	
+		const response = await fetch(`${api_url}/api/orderStatus/${order_hash}`, requestOptions);
+				
+		return response
+	} catch (error) {
+		console.log(error);
+	}
+	
+};
 const orderService = {
 	getAllOrders,
 	addOrder,
 	singleOrder,
 	updateOrder,
 	getOrdersByCustomerId,
+	getOrderHash,
 };
 // export this module
 export default orderService;

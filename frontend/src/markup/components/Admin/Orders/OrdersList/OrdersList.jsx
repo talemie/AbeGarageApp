@@ -321,7 +321,7 @@ function OrdersList() {
 														<FaEdit />
 													</Link>
 													|
-													<Link to="#">
+													<Link to={`/order/${order.order_hash}`}>
 														<FiExternalLink />
 													</Link>
 												</div>

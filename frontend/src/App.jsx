@@ -36,6 +36,7 @@ import ManagerLanding from "./markup/pages/managerPage/ManagerLanding";
 import CustomerProfile from "./markup/pages/admin/customerProfile";
 import ServiceUpdate from "./markup/pages/admin/ServiceUpdate";
 import UpdateOrder from "./markup/pages/admin/UpdateOrder";
+import OrderDetail from "./markup/components/OrderDetail/OrderDetail";
 
 function App() {
 	return (
@@ -60,6 +61,7 @@ function App() {
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
 				<Route path="/*" element={<Four04 />}></Route>
+				<Route path="/order/:order_hash" element={<OrderDetail />} />
 				<Route
 					path="/managerlanding"
 					element={
