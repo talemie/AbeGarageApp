@@ -30,6 +30,7 @@ async function install() {
       console.log("Table created");
     } catch (err) {
       finalMessage.message = "Not all tables are created";
+      console.log(finalMessage.message);
     }
   }
   if (!finalMessage.message) {
