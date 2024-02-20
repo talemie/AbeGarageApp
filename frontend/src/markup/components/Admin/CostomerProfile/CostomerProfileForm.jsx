@@ -341,7 +341,7 @@ const CustomerProfileForm = () => {
 															<FaEdit />
 														</Link>
 														|
-														<Link to={`/admin/order/view/${order.order_id}`}>
+														<Link to={`/order/${order.order_hash}`}>
 															<FiExternalLink />
 														</Link>
 													</div>

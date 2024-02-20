@@ -176,7 +176,7 @@ function OrdersList() {
 		};
 
 		window.addEventListener("resize", handleResize);
-		// handleResize(); 
+		// handleResize();
 
 		return () => {
 			window.removeEventListener("resize", handleResize);
@@ -218,7 +218,7 @@ function OrdersList() {
 													{customers[order.customer_id]?.name}
 												</span>
 												<br />
-												{customers[order.customer_id]?.email} <br />
+												{/* {customers[order.customer_id]?.email} <br /> */}
 												{/* {customers[order.customer_id]?.phone} */}
 											</td>
 
@@ -247,7 +247,7 @@ function OrdersList() {
 														<FaEdit />
 													</Link>
 													|
-													<Link to="#">
+													<Link to={`/order/${order.order_hash}`}>
 														<FiExternalLink />
 													</Link>
 												</div>
