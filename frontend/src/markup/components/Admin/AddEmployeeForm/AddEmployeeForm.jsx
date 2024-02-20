@@ -2,8 +2,10 @@ import React, { useState } from "react";
 // import employee.service.js
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AddEmployeeForm(props) {
+	const navigate = useNavigate();
 	const [employee_email, setEmail] = useState("");
 	const [employee_first_name, setFirstName] = useState("");
 	const [employee_last_name, setLastName] = useState("");
@@ -18,11 +20,11 @@ function AddEmployeeForm(props) {
 	const [success, setSuccess] = useState(false);
 	const [serverError, setServerError] = useState("");
 
-		let loggedInEmployeeToken = "";
-		const { employee } = useAuth();
-		if (employee && employee.employee_token) {
-			loggedInEmployeeToken = employee.employee_token;
-		}
+	let loggedInEmployeeToken = "";
+	const { employee } = useAuth();
+	if (employee && employee.employee_token) {
+		loggedInEmployeeToken = employee.employee_token;
+	}
 
 	const handleSubmit = (e) => {
 		// Prevent the default behavior of the form
@@ -91,8 +93,7 @@ function AddEmployeeForm(props) {
 					// Redirect to the employees page after 2 seconds
 					// For now, just redirect to the home page
 					setTimeout(() => {
-						// window.location.href = '/admin/employees';
-						window.location.href = "/";
+						navigate("/admin/employees");
 					}, 2000);
 				}
 			})
@@ -217,6 +218,11 @@ function AddEmployeeForm(props) {
 										</div>
 									</div>
 								</form>
+								{success && (
+									<div className="success-message">
+										Employee added successfully!
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

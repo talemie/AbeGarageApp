@@ -205,7 +205,7 @@ function AddVehicleForm({ toggle }) {
 												</div>
 											)}
 											{success && (
-												<div className="validation-error" role="alert">
+												<div className="success-message" role="alert">
 													{success}
 												</div>
 											)}

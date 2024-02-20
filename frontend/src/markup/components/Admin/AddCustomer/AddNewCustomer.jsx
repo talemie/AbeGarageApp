@@ -185,6 +185,11 @@ function AddNewCustomer(props) {
 										</div>
 									</div>
 								</form>
+								{success && (
+									<div className="success-message">
+										Customer added successfully!
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

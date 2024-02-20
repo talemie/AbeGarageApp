@@ -263,8 +263,9 @@ function OrdersList() {
 										<th>Order Id</th>
 										<th>Customer</th>
 										<th>Vehicle</th>
-										<th>Order Date</th>
-										<th>Received By</th>
+												<th>Order Date</th>
+												{isAdmin&&<th>Received By</th>}
+										
 										<th>Order Status</th>
 										<th>Active Order</th>
 										<th>Edit/View</th>
@@ -293,11 +294,12 @@ function OrdersList() {
 											<td>
 												{format(new Date(order.order_date), "MM / dd / yyyy ")}
 											</td>
-											<td>
+											{isAdmin&&<td>
 												<span className="order-text1">
 													{employees[order.employee_id]?.employeeName}
 												</span>
-											</td>
+											</td>}
+											
 											<td>
 												<span
 													className={
