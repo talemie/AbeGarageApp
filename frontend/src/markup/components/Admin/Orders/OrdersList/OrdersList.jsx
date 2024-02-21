@@ -7,8 +7,23 @@ import { useAuth } from "../../../../../Contexts/AuthContext";
 import vehicleService from "../../../../../services/vehicle.service";
 import employeeService from "../../../../../services/employee.service";
 import { FaEdit } from "react-icons/fa";
+import {
+	GrCaretNext,
+	GrChapterNext,
+	GrCaretPrevious,
+	GrChapterPrevious,
+} from "react-icons/gr";
+// import { GrChapterNext } from "react-icons/gr";
 import { FiExternalLink } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faSearch,
+	faAngleDoubleLeft,
+	faAngleLeft,
+	faAngleRight,
+	faAngleDoubleRight,
+} from "@fortawesome/free-solid-svg-icons";
 function OrdersList() {
 	const [orders, setOrders] = useState([]);
 	const [apiError, setApiError] = useState(false);
@@ -18,6 +33,10 @@ function OrdersList() {
 	const [employees, setEmployees] = useState({});
 	const { employee, isAdmin } = useAuth();
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	// for pagination
+	const pageSize = 5; // Set the desired number of records per page
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 	useEffect(() => {
 		let token = null;
 		if (employee) {
@@ -40,7 +59,12 @@ function OrdersList() {
 				} else {
 					const data = await response.json();
 					if (data.length !== 0) {
-						setOrders(data);
+						setTotalPages(Math.ceil(data.length / pageSize));
+						// Filter orders based on pagination
+						const start = (currentPage - 1) * pageSize;
+						const end = start + pageSize;
+						const paginatedOrders = data.slice(start, end);
+						setOrders(paginatedOrders);
 						await fetchCustomers(data);
 						await fetchVehicles(data);
 						await fetchEmployees(data);
@@ -166,8 +190,27 @@ function OrdersList() {
 		};
 
 		fetchOrders();
-	}, []);
+	}, [currentPage]);
+	// pagination clicks
+	const handleFirstClick = () => {
+		setCurrentPage(1);
+	};
 
+	const handlePreviousClick = () => {
+		if (currentPage > 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const handleNextClick = () => {
+		if (currentPage < totalPages) {
+			setCurrentPage(currentPage + 1);
+		}
+	};
+
+	const handleLastClick = () => {
+		setCurrentPage(totalPages);
+	};
 	// handling responsiveness
 
 	useEffect(() => {
@@ -263,9 +306,9 @@ function OrdersList() {
 										<th>Order Id</th>
 										<th>Customer</th>
 										<th>Vehicle</th>
-												<th>Order Date</th>
-												{isAdmin&&<th>Received By</th>}
-										
+										<th>Order Date</th>
+										{isAdmin && <th>Received By</th>}
+
 										<th>Order Status</th>
 										<th>Active Order</th>
 										<th>Edit/View</th>
@@ -294,12 +337,14 @@ function OrdersList() {
 											<td>
 												{format(new Date(order.order_date), "MM / dd / yyyy ")}
 											</td>
-											{isAdmin&&<td>
-												<span className="order-text1">
-													{employees[order.employee_id]?.employeeName}
-												</span>
-											</td>}
-											
+											{isAdmin && (
+												<td>
+													<span className="order-text1">
+														{employees[order.employee_id]?.employeeName}
+													</span>
+												</td>
+											)}
+
 											<td>
 												<span
 													className={
@@ -346,6 +391,50 @@ function OrdersList() {
 								</tbody>
 							</Table>
 						)}
+					</div>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							marginBottom: "20px",
+							alignItems: "center", // Centering vertically
+						}}
+					>
+						<button
+							onClick={handleFirstClick}
+							disabled={currentPage === 1}
+							style={{ marginRight: "10px" }}
+						>
+							<FontAwesomeIcon icon={faAngleDoubleLeft} /> First
+						</button>
+						<button
+							onClick={handlePreviousClick}
+							disabled={currentPage === 1}
+							style={{ marginRight: "10px" }}
+						>
+							<FontAwesomeIcon icon={faAngleLeft} /> Previous
+						</button>
+						<span style={{ margin: "0 10px" }}>
+							Page {currentPage} of {totalPages}
+						</span>
+						<button
+							onClick={handleNextClick}
+							disabled={currentPage === totalPages}
+							style={{
+								// backgroundColor: "black",
+								// color: "white",
+								marginRight: "10px",
+							}}
+						>
+							Next <FontAwesomeIcon icon={faAngleRight} />
+						</button>
+						<button
+							onClick={handleLastClick}
+							disabled={currentPage === totalPages}
+							// style={{ backgroundColor: "black", color: "white" }}
+						>
+							Last <FontAwesomeIcon icon={faAngleDoubleRight} />
+						</button>
 					</div>
 				</section>
 			)}

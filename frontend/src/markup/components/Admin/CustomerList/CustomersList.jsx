@@ -36,7 +36,7 @@ const CustomersList = () => {
 		customer_phone_number: "",
 		active: false,
 	});
-	const pageSize = 20; // Set the desired number of records per page
+	const pageSize = 5; // Set the desired number of records per page
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 if (employee) {
@@ -159,6 +159,7 @@ if (employee) {
 					active: currentActiveStatus === "yes",
 				}));
 			}
+			clg	
 		}
 
 		// Close the modal and reset selectedCustomer
@@ -330,14 +331,14 @@ if (employee) {
 						<button
 							onClick={handleFirstClick}
 							disabled={currentPage === 1}
-							style={{ backgroundColor: "yellow", marginRight: "10px" }}
+							style={{ marginRight: "10px" }}
 						>
 							<FontAwesomeIcon icon={faAngleDoubleLeft} /> First
 						</button>
 						<button
 							onClick={handlePreviousClick}
 							disabled={currentPage === 1}
-							style={{ backgroundColor: "yellow", marginRight: "10px" }}
+							style={{ marginRight: "10px" }}
 						>
 							<FontAwesomeIcon icon={faAngleLeft} /> Previous
 						</button>
@@ -348,8 +349,7 @@ if (employee) {
 							onClick={handleNextClick}
 							disabled={currentPage === totalPages}
 							style={{
-								backgroundColor: "black",
-								color: "white",
+								
 								marginRight: "10px",
 							}}
 						>
@@ -358,7 +358,7 @@ if (employee) {
 						<button
 							onClick={handleLastClick}
 							disabled={currentPage === totalPages}
-							style={{ backgroundColor: "black", color: "white" }}
+							
 						>
 							Last <FontAwesomeIcon icon={faAngleDoubleRight} />
 						</button>

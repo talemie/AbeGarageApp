@@ -2,6 +2,14 @@ import React from 'react'
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaHandPointer } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faSearch,
+	faAngleDoubleLeft,
+	faAngleLeft,
+	faAngleRight,
+	faAngleDoubleRight,
+} from "@fortawesome/free-solid-svg-icons";
 function SearchCustomer({
 	filterdCustomers,
 	handleCustomerSelection,
@@ -17,24 +25,37 @@ function SearchCustomer({
 						<div className="contact-form">
 							<form>
 								<div className="row clearfix">
-									<div className="form-group col-md-12">
+									<div
+										className="form-group col-md-12 "
+										style={{ position: "relative", display: "flex" }}
+									>
 										<input
 											type="text"
 											placeholder="Search for a customer using first name, last name, email address,  or phone number."
 											value={searchQuery}
 											onChange={handleInputChange}
 										/>
+										<FontAwesomeIcon
+											icon={faSearch}
+											style={{
+												position: "absolute",
+												right: "20px",
+												top: "50%",
+												transform: "translateY(-50%)",
+												cursor: "pointer",
+											}}
+										/>
 									</div>
 
 									<div className="form-group col-md-12">
-										<button
+										<Link
+											to={"/admin/add-customer"}
 											className="theme-btn btn-style-one"
 											type="submit"
 											data-loading-text="Please wait..."
-											
 										>
 											<span>Add New Customer</span>
-										</button>
+										</Link>
 									</div>
 								</div>
 							</form>
