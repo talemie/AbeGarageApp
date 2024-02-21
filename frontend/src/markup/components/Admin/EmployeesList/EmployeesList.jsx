@@ -10,7 +10,15 @@ import { useAuth } from "../../../../Contexts/AuthContext";
 import { format } from "date-fns"; // To properly format the date on the table
 // Import the getAllEmployees function
 import employeeService from "../../../../services/employee.service";
-
+// for pagination
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faSearch,
+	faAngleDoubleLeft,
+	faAngleLeft,
+	faAngleRight,
+	faAngleDoubleRight,
+} from "@fortawesome/free-solid-svg-icons";
 // Create the EmployeesList component
 const EmployeesList = () => {
 	// Create all the states we need to store the data
@@ -24,7 +32,10 @@ const EmployeesList = () => {
 	const { employee } = useAuth();
 	let token = null; // To store the token
 
-
+	// for pagination
+	const pageSize = 5; // Set the desired number of records per page
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 
 	if (employee) {
 		token = employee.employee_token;
@@ -50,17 +61,40 @@ const EmployeesList = () => {
 			})
 			.then((data) => {
 				if (data.data.length !== 0) {
-					setEmployees(data.data);
+					setTotalPages(Math.ceil(data.data.length / pageSize));
+					// Filter Employees based on pagination
+					const start = (currentPage - 1) * pageSize;
+					const end = start + pageSize;
+					const paginatedEmployees = data.data.slice(start, end);
+					setEmployees(paginatedEmployees);
 				}
 			})
 			.catch((err) => {
 				// console.log(err);
 			});
-	}, []);
+	}, [currentPage]);
+	// pagination clicks
+	const handleFirstClick = () => {
+		setCurrentPage(1);
+	};
 
+	const handlePreviousClick = () => {
+		if (currentPage > 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const handleNextClick = () => {
+		if (currentPage < totalPages) {
+			setCurrentPage(currentPage + 1);
+		}
+	};
+
+	const handleLastClick = () => {
+		setCurrentPage(totalPages);
+	};
 	return (
 		<>
-		
 			{apiError ? (
 				<section className="contact-section">
 					<div className="auto-container">
@@ -128,6 +162,50 @@ const EmployeesList = () => {
 									))}
 								</tbody>
 							</Table>
+						</div>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								marginBottom: "20px",
+								alignItems: "center", // Centering vertically
+							}}
+						>
+							<button
+								onClick={handleFirstClick}
+								disabled={currentPage === 1}
+								style={{ marginRight: "10px" }}
+							>
+								<FontAwesomeIcon icon={faAngleDoubleLeft} /> First
+							</button>
+							<button
+								onClick={handlePreviousClick}
+								disabled={currentPage === 1}
+								style={{ marginRight: "10px" }}
+							>
+								<FontAwesomeIcon icon={faAngleLeft} /> Previous
+							</button>
+							<span style={{ margin: "0 10px" }}>
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								onClick={handleNextClick}
+								disabled={currentPage === totalPages}
+								style={{
+									// backgroundColor: "black",
+									// color: "white",
+									marginRight: "10px",
+								}}
+							>
+								Next <FontAwesomeIcon icon={faAngleRight} />
+							</button>
+							<button
+								onClick={handleLastClick}
+								disabled={currentPage === totalPages}
+								// style={{ backgroundColor: "black", color: "white" }}
+							>
+								Last <FontAwesomeIcon icon={faAngleDoubleRight} />
+							</button>
 						</div>
 					</section>
 				</>

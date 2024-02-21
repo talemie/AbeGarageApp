@@ -7,13 +7,6 @@ import { useAuth } from "../../../../../Contexts/AuthContext";
 import vehicleService from "../../../../../services/vehicle.service";
 import employeeService from "../../../../../services/employee.service";
 import { FaEdit } from "react-icons/fa";
-import {
-	GrCaretNext,
-	GrChapterNext,
-	GrCaretPrevious,
-	GrChapterPrevious,
-} from "react-icons/gr";
-// import { GrChapterNext } from "react-icons/gr";
 import { FiExternalLink } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
