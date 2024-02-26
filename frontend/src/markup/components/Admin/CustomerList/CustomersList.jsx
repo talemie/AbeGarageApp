@@ -39,9 +39,9 @@ const CustomersList = () => {
 	const pageSize = 5; // Set the desired number of records per page
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
-if (employee) {
-			token = employee.employee_token;
-		}
+	if (employee) {
+		token = employee.employee_token;
+	}
 	const getCustomers = async () => {
 		try {
 			const response = await customerServices.getAllCustomers(token);
@@ -131,6 +131,7 @@ if (employee) {
 
 	const handleConfirmActive = () => {
 		if (selectedCustomer) {
+			// console.log(selectedCustomer);
 			const updatedCustomers = customers.map((customer) =>
 				customer.customer_id === selectedCustomer.customer_id
 					? {
@@ -140,7 +141,32 @@ if (employee) {
 					  }
 					: customer
 			);
-			setCustomers(updatedCustomers);
+			// setCustomers(updatedCustomers);
+
+			const newCustomerData = {
+				...selectedCustomer,
+				active_customer_status:
+					selectedCustomer.active_customer_status === 1 ? 0 : 1,
+			};
+			// console.log("customer to update:", newCustomerData);
+			const customerValue = {
+				customer_first_name: newCustomerData.customer_first_name,
+				customer_last_name: newCustomerData.customer_last_name,
+				customer_phone_number: newCustomerData.customer_phone_number,
+				active_customer_status: newCustomerData.active_customer_status,
+				customer_email: newCustomerData.customer_email,
+			};
+			// send the new customer value for update
+			const updateCustomer = customerServices.updateCustomer(
+				newCustomerData.customer_id,
+				customerValue,
+				token
+			);
+			updateCustomer.then((response) => {
+				if (response.ok) {
+					setCustomers(updatedCustomers);
+				}
+			});
 
 			// Check if the active status was updated from 'no' to 'yes' or vice versa
 			const prevActiveStatus =
@@ -159,7 +185,6 @@ if (employee) {
 					active: currentActiveStatus === "yes",
 				}));
 			}
-			clg	
 		}
 
 		// Close the modal and reset selectedCustomer
@@ -270,7 +295,9 @@ if (employee) {
 																<FaEdit />
 															</Link>{" "}
 															|{" "}
-															<Link to="/admin/customer/{customerId}">
+															<Link
+																to={`/admin/customer-profile/${customer.customer_id}`}
+															>
 																<FiExternalLink />
 															</Link>
 														</div>
@@ -349,7 +376,6 @@ if (employee) {
 							onClick={handleNextClick}
 							disabled={currentPage === totalPages}
 							style={{
-								
 								marginRight: "10px",
 							}}
 						>
@@ -358,7 +384,6 @@ if (employee) {
 						<button
 							onClick={handleLastClick}
 							disabled={currentPage === totalPages}
-							
 						>
 							Last <FontAwesomeIcon icon={faAngleDoubleRight} />
 						</button>

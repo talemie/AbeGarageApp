@@ -186,7 +186,7 @@ const CustomerProfileForm = () => {
 							{customer?.active_customer_status == 1 ? " Yes" : " No"} <br />
 							<span className="order-text2">
 								Edit customer info_
-								<Link to="/admin/customers">
+								<Link to={`/admin/customer/edit/${customer_id}`}>
 									<FaEdit />
 								</Link>
 							</span>
