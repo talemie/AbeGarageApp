@@ -4,9 +4,12 @@ import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../Contexts/AuthContext";
 // Import the login service to access the logout function
 import loginService from "../../../services/login.service";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Header() {
+	const {pathname} = useLocation()
+	console.log(pathname)
+	
 	// Use the custom hook to access the data in the context
 	const {
 		isLogged,
@@ -127,8 +130,10 @@ function Header() {
 									</nav>
 								</div>
 								{!isLogged ? <div className="search-btn"></div> : ""}
-
-								{isLogged ? (
+								
+								{
+									!pathname.includes("/order-status/")  && <>
+										{isLogged ? (
 									<div className="link-btn">
 										<Link
 											to="/"
@@ -145,6 +150,9 @@ function Header() {
 										</Link>
 									</div>
 								)}
+									</> 
+								}
+							
 							</div>
 						</div>
 					</div>

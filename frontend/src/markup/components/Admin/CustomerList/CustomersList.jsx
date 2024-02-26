@@ -159,7 +159,7 @@ if (employee) {
 					active: currentActiveStatus === "yes",
 				}));
 			}
-			clg	
+			
 		}
 
 		// Close the modal and reset selectedCustomer
