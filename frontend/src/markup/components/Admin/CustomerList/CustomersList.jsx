@@ -29,13 +29,6 @@ const CustomersList = () => {
 	const navigate = useNavigate();
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchResults, setSearchResults] = useState([]);
-	const [editedCustomer, setEditedCustomer] = useState({
-		customer_first_name: "",
-		customer_last_name: "",
-		customer_email: "",
-		customer_phone_number: "",
-		active: false,
-	});
 	const pageSize = 5; // Set the desired number of records per page
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
@@ -168,23 +161,6 @@ const CustomersList = () => {
 				}
 			});
 
-			// Check if the active status was updated from 'no' to 'yes' or vice versa
-			const prevActiveStatus =
-				selectedCustomer.active_customer_status === 1 ? "yes" : "no";
-			const currentActiveStatus =
-				updatedCustomers.find(
-					(customer) => customer.customer_id === selectedCustomer.customer_id
-				).active_customer_status === 1
-					? "yes"
-					: "no";
-
-			// If the active status changed, update the editedCustomer state
-			if (prevActiveStatus !== currentActiveStatus) {
-				setEditedCustomer((prevEditedCustomer) => ({
-					...prevEditedCustomer,
-					active: currentActiveStatus === "yes",
-				}));
-			}
 		}
 
 		// Close the modal and reset selectedCustomer
