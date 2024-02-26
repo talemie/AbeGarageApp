@@ -2,10 +2,11 @@
 const orderService = require("../services/order.service");
 // import the vehicle service to check if the vehicle is exist or not before adding the order
 const vehicleService = require("../services/vehicle.service");
-// import customerServices 
+// import customerServices
 const customerService = require("../services/customer.service.js");
-// import Service services 
+// import Service services
 const serviceService = require("../services/service.service.js");
+const nodemailer = require("nodemailer");
 
 // Create the create order controller
 async function createOrder(req, res, next) {
@@ -37,6 +38,39 @@ async function createOrder(req, res, next) {
 		// call the createOrder method from the order service
 		const order = await orderService.createOrder(orderData);
 		if (order) {
+			const getSingleOrder = await orderService.getOrderById(order.order_id);
+			const getcustomerbyEmail = await customerService.getCustomerById(
+				getSingleOrder.customer_id
+			);
+			console.log(getcustomerbyEmail);
+			const customerEmail = getcustomerbyEmail.customer_email;
+
+			const orderStatusURL = `http://localhost:5174/order/${getSingleOrder.order_hash}`;
+
+			const transporter = nodemailer.createTransport({
+				service: "gmail",
+
+				auth: {
+					user: process.env.Email,
+					pass: process.env.EmailPassword,
+				},
+			});
+			// Send email notification
+			const mailOptions = {
+				from: process.env.Email,
+				to: customerEmail,
+				subject: "Order Confirmation",
+				text: `Your order has been successfully placed! n/n Please follow this link to view your Order Status:\n  ${orderStatusURL},`,
+			};
+
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					console.error("Error sending email:", error);
+				} else {
+					console.log("Email sent:", info.response);
+				}
+			});
+
 			res.status(200).json({
 				status: "true",
 				msg: "Order added successfully!",
@@ -105,9 +139,7 @@ async function getOrdersByCustomerId(req, res, next) {
 
 	try {
 		// check if customer exists first
-		const customer = await orderService.checkIfCustomerExists(
-			customer_id
-		);
+		const customer = await orderService.checkIfCustomerExists(customer_id);
 		if (!customer) {
 			res.status(400).json({
 				error: "Customer not Found!",
@@ -194,7 +226,7 @@ async function getOrderByOrderHash(req, res, next) {
 						)
 					);
 					console.log("responses from get service:", responses);
-				
+
 					const servicesMap = responses.map((service) => {
 						return {
 							service_id: service.service_id,
