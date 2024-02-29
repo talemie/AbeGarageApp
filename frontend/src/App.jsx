@@ -61,7 +61,9 @@ function App() {
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
 				<Route path="/*" element={<Four04 />}></Route>
+
 				<Route path="/order-status/:order_hash" element={<OrderDetail />} />
+
 				<Route
 					path="/managerlanding"
 					element={
@@ -127,6 +129,14 @@ function App() {
 					}
 				/>
 				<Route
+					path="/order-details/:order_hash"
+					element={
+						<PrivateAuthRoute roles={[1, 2, 3]}>
+							<OrderDetail />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
 					path="/admin/order"
 					element={
 						<PrivateAuthRoute roles={[2, 3]}>
@@ -154,6 +164,6 @@ function App() {
 			<Footer />
 		</>
 	);
-} 
+}
 
 export default App;
