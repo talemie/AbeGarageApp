@@ -61,7 +61,7 @@ function App() {
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/contact" element={<Contact />}></Route>
 				<Route path="/*" element={<Four04 />}></Route>
-				<Route path="/order-details/:order_hash" element={<OrderDetail />} />
+
 				<Route path="/order-status/:order_hash" element={<OrderDetail />} />
 
 				<Route
@@ -125,6 +125,14 @@ function App() {
 					element={
 						<PrivateAuthRoute roles={[1, 2, 3]}>
 							<Orders />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/order-details/:order_hash"
+					element={
+						<PrivateAuthRoute roles={[1, 2, 3]}>
+							<OrderDetail />
 						</PrivateAuthRoute>
 					}
 				/>
