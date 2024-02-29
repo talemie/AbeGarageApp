@@ -4,13 +4,10 @@ import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../Contexts/AuthContext";
 // Import the login service to access the logout function
 import loginService from "../../../services/login.service";
+
 import { Link, useLocation } from "react-router-dom";
 
 function Header() {
-	const {pathname} = useLocation()
-	console.log(pathname)
-	
-	// Use the custom hook to access the data in the context
 	const {
 		isLogged,
 		setIsLogged,
@@ -23,6 +20,11 @@ function Header() {
 		setisEmployee,
 		setEmployee,
 	} = useAuth();
+	const { pathname } = useLocation();
+
+	console.log(pathname);
+
+	// Use the custom hook to access the data in the context
 
 	const logOut = () => {
 		// Call the logout function from the login service
@@ -47,15 +49,25 @@ function Header() {
 								</div>
 							</div>
 							<div className="right-column">
-								{isLogged ? (
-									<div className="link-btn">
-										<div className="phone-number">
-											<strong>Welcome, {employee?.employee_first_name}</strong>
-										</div>
-									</div>
+								{!pathname.includes("/order-status/") ? (
+									<>
+										{isLogged ? (
+											<div className="link-btn">
+												<div className="phone-number">
+													<strong>
+														Welcome, {employee?.employee_first_name}
+													</strong>
+												</div>
+											</div>
+										) : (
+											<div className="phone-number ">
+												Schedule Appointment: <strong>1800 456 7890 </strong>
+											</div>
+										)}
+									</>
 								) : (
-									<div className="phone-number">
-										Schedule Appointment: <strong>1800 456 7890 </strong>
+									<div className="phone-number mr-5">
+										<strong>Welcome, Dear Guest</strong>
 									</div>
 								)}
 							</div>
@@ -95,64 +107,73 @@ function Header() {
 												<li>
 													<Link to="/contact">Contact Us</Link>
 												</li>
-												{isAdmin ? (
-													<li className="mr-5 ">
-														<Link
-															className="text-primary"
-															to="/admin/dashboard"
-														>
-															Admin
-														</Link>
-													</li>
-												) : (
-													""
-												)}
-												{isManager ? (
-													<li className="mr-5">
-														<Link className="text-primary" to="/managerlanding">
-															Manager
-														</Link>
-													</li>
-												) : (
-													""
-												)}
-												{isEmployee ? (
-													<li className="mr-5">
-														<Link className="text-primary" to="/admin/orders">
-															Orders
-														</Link>
-													</li>
-												) : (
-													""
+												{!pathname.includes("/order-status/") && (
+													<>
+														{isAdmin ? (
+															<li className="mr-5 ">
+																<Link
+																	className="text-primary"
+																	to="/admin/dashboard"
+																>
+																	Admin
+																</Link>
+															</li>
+														) : (
+															""
+														)}
+														{isManager ? (
+															<li className="mr-5">
+																<Link
+																	className="text-primary"
+																	to="/managerlanding"
+																>
+																	Manager
+																</Link>
+															</li>
+														) : (
+															""
+														)}
+														{isEmployee ? (
+															<li className="mr-5">
+																<Link
+																	className="text-primary"
+																	to="/admin/orders"
+																>
+																	Orders
+																</Link>
+															</li>
+														) : (
+															""
+														)}
+													</>
 												)}
 											</ul>
 										</div>
 									</nav>
 								</div>
 								{!isLogged ? <div className="search-btn"></div> : ""}
-								
-								{
-									!pathname.includes("/order-status/")  && <>
+
+								{!pathname.includes("/order-status/") && (
+									<>
 										{isLogged ? (
-									<div className="link-btn">
-										<Link
-											to="/"
-											className="theme-btn btn-style-one blue"
-											onClick={logOut}
-										>
-											Log out
-										</Link>
-									</div>
-								) : (
-									<div className="link-btn">
-										<Link to="/login" className="theme-btn btn-style-one">
-											Login
-										</Link>
-									</div>
+											<div className="link-btn">
+												<Link
+													to="/"
+													className="theme-btn btn-style-one blue"
+													onClick={logOut}
+												>
+													Log out
+												</Link>
+											</div>
+										) : (
+											<div className="link-btn">
+												<Link to="/login" className="theme-btn btn-style-one">
+													Login
+												</Link>
+											</div>
+										)}
+									</>
 								)}
-									</> 
-								}
-							
 							</div>
 						</div>
 					</div>

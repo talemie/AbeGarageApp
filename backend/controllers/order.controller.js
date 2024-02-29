@@ -45,7 +45,7 @@ async function createOrder(req, res, next) {
 			console.log(getcustomerbyEmail);
 			const customerEmail = getcustomerbyEmail.customer_email;
 
-			const orderStatusURL = `http://localhost:5174/order-status/${getSingleOrder.order_hash}`;
+			const orderStatusURL = `http://localhost:5173/order-status/${getSingleOrder.order_hash}`;
 
 			const transporter = nodemailer.createTransport({
 				service: "gmail",
