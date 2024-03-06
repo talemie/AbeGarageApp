@@ -56,7 +56,7 @@ function LoginForm(props) {
 		const loginEmployee = loginService.logIn(formData);
 
 		loginEmployee
-			.then((response) => response.json())
+			.then((response) => console.log(response))
 			.then((response) => {
 				console.log(response);
 
@@ -105,7 +105,7 @@ function LoginForm(props) {
 												type="email"
 												value={employee_email}
 												name="employee_email"
-												onChange={(event) => setEmail(event.target. value)}
+												onChange={(event) => setEmail(event.target.value)}
 												placeholder="Email"
 											/>
 											{emailError && (
