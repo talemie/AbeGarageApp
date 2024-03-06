@@ -4,7 +4,7 @@ require("dotenv").config();
 let sanitize = require("sanitize");
 let cors = require("cors");
 let corsOptions = {
-	origin: process.env.FRONTEND_URL,
+	origin: [process.env.FRONTEND_URL, process.env.FRONTEND_URL2],
 	optionsSuccessStatus: 200,
 };
 let port = process.env.PORT;
