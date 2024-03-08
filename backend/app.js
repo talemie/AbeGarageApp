@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(sanitize.middleware);
 app.use(router);
 
+// Listen with SSL
 const https = require("https");
 const fs = require("fs");
 
@@ -29,4 +30,8 @@ server.listen(port, () => {
 	  console.log(`Server running on port: ${port}`);
 	  });
 
+// for local test without SSL
+// app.listen(port, () => {
+	// console.log(`Server running on port: ${port}`);
+// });
 module.exports = app;
