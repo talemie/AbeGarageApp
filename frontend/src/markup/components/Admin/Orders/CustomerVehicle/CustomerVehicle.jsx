@@ -19,11 +19,27 @@ function CustomerVehicle({ customer, vehicles }) {
 	const [totalPrice, setTotalPrice] = useState();
 	const [orderDescription, setOrderDescription] = useState("");
 	const [selectedServices, setSelectedServices] = useState([]);
-
+	// checking mobile size
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	// Errors
 	const [success, setSuccess] = useState(false);
 	const [serverError, setServerError] = useState("");
 
+	// handling responsiveness
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener("resize", handleResize);
+		// handleResize();
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
+	console.log(isMobile);
 	// close button functionality
 	const closeInfo = () => {
 		setIsCustomerSelected(false);
@@ -76,7 +92,7 @@ function CustomerVehicle({ customer, vehicles }) {
 			}
 		});
 	};
-	console.log("selected services:", selectedServices);
+	// console.log("selected services:", selectedServices);
 	const formatSelectedServices = () => {
 		return selectedServices.map((serviceId) => ({
 			service_id: serviceId,
@@ -181,9 +197,12 @@ function CustomerVehicle({ customer, vehicles }) {
 													<th>Make</th>
 													<th>Model</th>
 													<th>Tag</th>
+													{!isMobile && <>
 													<th>Serial</th>
 													<th>Color</th>
 													<th>Milage</th>
+													</>}
+													
 													<th>Choose</th>
 												</tr>
 											</thead>
@@ -194,9 +213,11 @@ function CustomerVehicle({ customer, vehicles }) {
 														<td>{vehicle.vehicle_make}</td>
 														<td>{vehicle.vehicle_model}</td>
 														<td>{vehicle.vehicle_tag}</td>
-														<td>{vehicle.vehicle_serial}</td>
+														{!isMobile && <><td>{vehicle.vehicle_serial}</td>
 														<td>{vehicle.vehicle_color}</td>
 														<td>{vehicle.vehicle_mileage}</td>
+														</>}
+														
 														<td>
 															<div className="edit-delete-icons">
 																<Link

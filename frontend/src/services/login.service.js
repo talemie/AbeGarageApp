@@ -9,7 +9,7 @@ const logIn = async (formData) => {
 	};
 	// console.log("API URL:", api_URL);
 	console.log("about to sennd request");
-	console.log(requestOptions.body);
+	// console.log(requestOptions.body);
 	const response = await fetch(`${api_url}/api/employee/login`, requestOptions);
 
 	return response;
