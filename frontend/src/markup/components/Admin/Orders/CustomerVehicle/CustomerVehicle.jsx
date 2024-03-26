@@ -7,6 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import serviceService from "../../../../../services/service.service";
 import { useAuth } from "../../../../../Contexts/AuthContext";
 import orderService from "../../../../../services/order.service";
+// for ETA date picker
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function CustomerVehicle({ customer, vehicles }) {
 	const navigate = useNavigate();
 	const { isLogged, isAdmin, employee } = useAuth();
@@ -21,6 +24,9 @@ function CustomerVehicle({ customer, vehicles }) {
 	const [selectedServices, setSelectedServices] = useState([]);
 	// checking mobile size
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	// for date picker ETA
+	const [selectedDate, setSelectedDate] = useState(null);
 	// Errors
 	const [success, setSuccess] = useState(false);
 	const [serverError, setServerError] = useState("");
@@ -114,7 +120,7 @@ function CustomerVehicle({ customer, vehicles }) {
 			customer_id: customer_id,
 			vehicle_id: vehicle_id,
 			order_description: orderDescription,
-			estimated_completion_date: "2024-05-10T14:10:11.338Z",
+			estimated_completion_date: selectedDate,
 			order_total_price: totalPrice,
 			additional_request: additionalRequest,
 			notes_for_customer: "Customer prefers contact by email",
@@ -197,12 +203,14 @@ function CustomerVehicle({ customer, vehicles }) {
 													<th>Make</th>
 													<th>Model</th>
 													<th>Tag</th>
-													{!isMobile && <>
-													<th>Serial</th>
-													<th>Color</th>
-													<th>Milage</th>
-													</>}
-													
+													{!isMobile && (
+														<>
+															<th>Serial</th>
+															<th>Color</th>
+															<th>Milage</th>
+														</>
+													)}
+
 													<th>Choose</th>
 												</tr>
 											</thead>
@@ -213,11 +221,14 @@ function CustomerVehicle({ customer, vehicles }) {
 														<td>{vehicle.vehicle_make}</td>
 														<td>{vehicle.vehicle_model}</td>
 														<td>{vehicle.vehicle_tag}</td>
-														{!isMobile && <><td>{vehicle.vehicle_serial}</td>
-														<td>{vehicle.vehicle_color}</td>
-														<td>{vehicle.vehicle_mileage}</td>
-														</>}
-														
+														{!isMobile && (
+															<>
+																<td>{vehicle.vehicle_serial}</td>
+																<td>{vehicle.vehicle_color}</td>
+																<td>{vehicle.vehicle_mileage}</td>
+															</>
+														)}
+
 														<td>
 															<div className="edit-delete-icons">
 																<Link
@@ -331,7 +342,7 @@ function CustomerVehicle({ customer, vehicles }) {
 																	)}
 																	<textarea
 																		name="form_message"
-																		placeholder="Service description"
+																		placeholder="Additional Requests"
 																		value={additionalRequest}
 																		onChange={handleAdditionalRequest}
 																	></textarea>
@@ -346,16 +357,27 @@ function CustomerVehicle({ customer, vehicles }) {
 																		onChange={handleOrderDescription}
 																	/>
 																</div>
-																<div className="form-group col-md-12">
-																	<input
-																		type="text"
-																		name="form_subject"
-																		placeholder="Price"
-																		required
-																		value={totalPrice}
-																		onChange={handleTotalPrice}
-																	/>
+																<div className="form-group col-md-12 row">
+																	<div className="col-md-6">
+																		<input
+																			type="text"
+																			name="form_subject"
+																			placeholder="Price"
+																			required
+																			value={totalPrice}
+																			onChange={handleTotalPrice}
+																		/>
+																	</div>
+																	<div className="col-md-6">
+																		<DatePicker
+																			selected={selectedDate}
+																			onChange={(date) => setSelectedDate(date)}
+																			dateFormat="yyyy-MM-dd"
+																			placeholderText="estimated completion date"
+																		/>
+																	</div>
 																</div>
+																
 																<div className="form-group col-md-12">
 																	<button
 																		className="theme-btn btn-style-one"
