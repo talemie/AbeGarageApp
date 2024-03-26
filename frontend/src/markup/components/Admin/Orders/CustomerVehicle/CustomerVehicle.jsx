@@ -287,10 +287,10 @@ function CustomerVehicle({ customer, vehicles }) {
 											>
 												<h5 className="order-text2">{service.service_name}</h5>
 												<div className="row  ">
-													<div className="col-11 ">
+													<div className="col-sm-11 ">
 														{service.service_description}
 													</div>
-													<div className="col-1 ">
+													<div className="col-sm-1 mt-3 mt-md-0 ">
 														<input
 															type="checkbox"
 															name={`service_${service.service_id}`}
