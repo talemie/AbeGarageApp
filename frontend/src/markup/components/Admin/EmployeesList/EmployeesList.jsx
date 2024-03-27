@@ -36,6 +36,8 @@ const EmployeesList = () => {
 	const pageSize = 5; // Set the desired number of records per page
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
+	// for responsiveness
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 	if (employee) {
 		token = employee.employee_token;
@@ -93,6 +95,21 @@ const EmployeesList = () => {
 	const handleLastClick = () => {
 		setCurrentPage(totalPages);
 	};
+
+	// handling responsiveness
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener("resize", handleResize);
+		// handleResize();
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 	return (
 		<>
 			{apiError ? (
@@ -110,58 +127,114 @@ const EmployeesList = () => {
 							<div className="contact-title">
 								<h2>Employees</h2>
 							</div>
-							<Table striped bordered hover>
-								<thead>
-									<tr>
-										<th>Employee Id</th>
-										<th>Active</th>
-										<th>First Name</th>
-										<th>Last Name</th>
-										<th>Email</th>
-										<th>Phone</th>
-										<th>Added Date</th>
-										<th>Role</th>
-										<th>Edit/View</th>
-									</tr>
-								</thead>
-								<tbody>
-									{employees.map((employee) => (
-										<tr key={employee.employee_id}>
-											<td>{employee.employee_id}</td>
-											<td>{employee.active_employee ? "Yes" : "No"}</td>
-											<td>{employee.employee_first_name}</td>
-											<td>{employee.employee_last_name}</td>
-											<td>{employee.employee_email}</td>
-											<td>{employee.employee_phone}</td>
-											<td>
-												{format(
-													new Date(employee.added_date),
-													"MM - dd - yyyy | kk:mm"
-												)}
-											</td>
-											<td>{employee.company_role_name}</td>
-											<td>
-												<div className="edit-delete-icons">
-													{employee.fullName} {employee.email}
-													<Link
-														to={`/admin/employee/edit/${employee.employee_id}`}
-													>
-														<FaEdit />
-													</Link>
-													<button
-														onClick={() => {
-															handleDelete(employee.employee_id);
-														}}
-														type="button"
-													>
-														<FiExternalLink />
-													</button>
-												</div>
-											</td>
+							{isMobile?(
+								<Table striped bordered hover>
+									<thead>
+										<tr>
+											<th>Id</th>
+											<th>Active</th>
+											<th>First Name</th>
+											<th>Last Name</th>
+											{/* <th>Email</th> */}
+											{/* <th>Phone</th>
+											<th>Added Date</th>
+											<th>Role</th> */}
+											<th>Edit/View</th>
 										</tr>
-									))}
-								</tbody>
-							</Table>
+									</thead>
+									<tbody>
+										{employees.map((employee) => (
+											<tr key={employee.employee_id}>
+												<td>{employee.employee_id}</td>
+												<td>{employee.active_employee ? "Yes" : "No"}</td>
+												<td>{employee.employee_first_name}</td>
+												<td>{employee.employee_last_name}</td>
+												{/* <td>{employee.employee_email}</td> */}
+												{/* <td>{employee.employee_phone}</td>
+												<td>
+													{format(
+														new Date(employee.added_date),
+														"MM - dd - yyyy | kk:mm"
+													)}
+												</td>
+												<td>{employee.company_role_name}</td> */}
+												<td>
+													<div className="edit-delete-icons">
+														{employee.fullName} {employee.email}
+														<Link
+															to={`/admin/employee/edit/${employee.employee_id}`}
+														>
+															<FaEdit />
+														</Link>
+														<button
+															onClick={() => {
+																handleDelete(employee.employee_id);
+															}}
+															type="button"
+														>
+															<FiExternalLink />
+														</button>
+													</div>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</Table>
+							) : (
+								<Table striped bordered hover>
+									<thead>
+										<tr>
+											<th>Employee Id</th>
+											<th>Active</th>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Phone</th>
+											<th>Added Date</th>
+											<th>Role</th>
+											<th>Edit/View</th>
+										</tr>
+									</thead>
+									<tbody>
+										{employees.map((employee) => (
+											<tr key={employee.employee_id}>
+												<td>{employee.employee_id}</td>
+												<td>{employee.active_employee ? "Yes" : "No"}</td>
+												<td>{employee.employee_first_name}</td>
+												<td>{employee.employee_last_name}</td>
+												<td>{employee.employee_email}</td>
+												<td>{employee.employee_phone}</td>
+												<td>
+													{format(
+														new Date(employee.added_date),
+														"MM - dd - yyyy | kk:mm"
+													)}
+												</td>
+												<td>{employee.company_role_name}</td>
+												<td>
+													<div className="edit-delete-icons">
+														{employee.fullName} {employee.email}
+														<Link
+															to={`/admin/employee/edit/${employee.employee_id}`}
+														>
+															<FaEdit />
+														</Link>
+														<button
+															onClick={() => {
+																handleDelete(employee.employee_id);
+															}}
+															type="button"
+														>
+															<FiExternalLink />
+														</button>
+													</div>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</Table>
+							)
+							}
 						</div>
 						<div
 							style={{
