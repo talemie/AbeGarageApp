@@ -81,10 +81,10 @@ function Header() {
 						<div className="inner-container">
 							<div className="logo-box">
 								<div className="logo">
-									<a href="/">
+									<Link to="/">
 										{/* <img src={logo} alt="" /> */}
 										<img src={logo1} alt="" />
-									</a>
+									</Link>
 								</div>
 							</div>
 							<div className="right-column">

@@ -368,7 +368,7 @@ function CustomerVehicle({ customer, vehicles }) {
 																			onChange={handleTotalPrice}
 																		/>
 																	</div>
-																	<div className="col-md-6">
+																	<div className="col-md-6 mt-4 mt-md-0 ">
 																		<DatePicker
 																			selected={selectedDate}
 																			onChange={(date) => setSelectedDate(date)}
