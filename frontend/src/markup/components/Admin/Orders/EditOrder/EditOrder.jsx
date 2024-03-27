@@ -156,13 +156,7 @@ function EditOrder() {
 	// handle submit order
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// check if the order is complete
-		if (!orderData.order_completed) {
-			setOrderData({
-				...orderData,
-				completion_date: null,
-			});
-		}
+		
 		// console.log('new updated order:',orderData);
 		//  the logic to update the order using the updatedOrder state
 		const updatOrder = orderService.updateOrder(token, order_id, orderData);
@@ -322,40 +316,6 @@ function EditOrder() {
 											/>
 										</div>
 
-										{/* <div className="form-group col-md-6">
-											<label htmlFor="eta">Estimated completion date:</label> <br />
-											<DatePicker
-												selected={selectedDate}
-												onChange={(date) =>
-													handleDateChange(date, "estimated_completion_date")
-												}
-												dateFormat="yyyy-MM-dd"
-												placeholderText="Select a date"
-											/>
-										</div> */}
-
-										<div className="form-group col-md-12">
-											<label htmlFor="eta"> completed on: </label>
-
-											
-
-											<input
-												type="text"
-												name="eta"
-												placeholder="ETA"
-												value={new Date().toISOString()}
-												onChange={(event) =>
-													setOrderData({
-														...orderData,
-														completion_date: event.target.value,
-													})
-												}
-												required
-											/>
-										</div>
-
-										
-
 										<div className="form-group col-md-12">
 											<label htmlFor="price">Order total price:</label>
 											<input
@@ -411,6 +371,7 @@ function EditOrder() {
 													setOrderData({
 														...orderData,
 														order_completed: event.target.checked,
+														completion_date: event.target.checked ? new Date() : null,
 													})
 												}
 											/>
