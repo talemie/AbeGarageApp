@@ -4,6 +4,8 @@ import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../Contexts/AuthContext";
 // Import the login service to access the logout function
 import loginService from "../../../services/login.service";
+// Import logo 
+import logo1 from "../../../assets/images/logokebe.png";
 
 import { Link, useLocation } from "react-router-dom";
 
@@ -80,7 +82,8 @@ function Header() {
 							<div className="logo-box">
 								<div className="logo">
 									<a href="/">
-										<img src={logo} alt="" />
+										{/* <img src={logo} alt="" /> */}
+										<img src={logo1} alt="" />
 									</a>
 								</div>
 							</div>

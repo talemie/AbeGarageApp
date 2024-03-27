@@ -16,22 +16,22 @@ app.use(sanitize.middleware);
 app.use(router);
 
 // Listen with SSL
-const https = require("https");
-const fs = require("fs");
+// const https = require("https");
+// const fs = require("fs");
 
-const options = {
-	  key: fs.readFileSync("/etc/letsencrypt/live/kebegarage.com/privkey.pem"),
-	  cert: fs.readFileSync("/etc/letsencrypt/live/kebegarage.com/fullchain.pem"),
-};
+// const options = {
+// 	  key: fs.readFileSync("/etc/letsencrypt/live/kebegarage.com/privkey.pem"),
+// 	  cert: fs.readFileSync("/etc/letsencrypt/live/kebegarage.com/fullchain.pem"),
+// };
 
-const server = https.createServer(options, app);
+// const server = https.createServer(options, app);
 
-server.listen(port, () => {
-	  console.log(`Server running on port: ${port}`);
-	  });
+// server.listen(port, () => {
+// 	  console.log(`Server running on port: ${port}`);
+// 	  });
 
 // for local test without SSL
-// app.listen(port, () => {
-	// console.log(`Server running on port: ${port}`);
-// });
+app.listen(port, () => {
+	console.log(`Server running on port: ${port}`);
+});
 module.exports = app;

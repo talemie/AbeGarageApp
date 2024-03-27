@@ -266,16 +266,17 @@ input:disabled {
 
 /* aboutus background  */
 .page-title{
-    background-image: url('../images/banner/aboutusBanner.png');
+    background-image: url('../images/banner/aboutus13.png');
     background-repeat: "no-repeat";
     background-size: cover;
 		
   }
 /* contact banner  */
   .contactbanner{
-    background-image: url('../images/banner/Abegaragebg.png');
+    background-image: url('../images/banner/contactfinal.png');
     background-repeat: "no-repeat";
     background-size: cover;
+	/* background-size: 100% auto; */
   }
 
 
